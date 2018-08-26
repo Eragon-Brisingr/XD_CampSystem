@@ -22,4 +22,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
 	TSubclassOf<class UXD_CampRelationship> CampRelationshipClass;
+
+	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
+	TSoftObjectPtr<class UStringTable> CampNameStringTable;
+
+	class UStringTable* GetCampNameStringTable() const;
 };

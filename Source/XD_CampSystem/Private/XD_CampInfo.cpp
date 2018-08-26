@@ -4,7 +4,7 @@
 #include <UnrealNetwork.h>
 #include <Engine/ActorChannel.h>
 #include "XD_CampRelationship.h"
-#include "XD_CampManagerUtility.h"
+#include "XD_CampSystemUtility.h"
 #include "XD_CampSystemSetting.h"
 
 
@@ -111,7 +111,7 @@ bool UXD_CampInfo::ReduceCampRelationshipValue(const UObject* WorldContextObject
 
 float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const
 {
-	if (WithCamp)
+	if (this && WithCamp)
 	{
 		if (this == WithCamp)
 		{
@@ -128,7 +128,7 @@ float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, 
 
 EXD_CampRelationship UXD_CampInfo::GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const
 {
-	if (WithCamp)
+	if (this && WithCamp)
 	{
 		if (this == WithCamp)
 		{

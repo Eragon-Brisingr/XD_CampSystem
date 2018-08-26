@@ -5,7 +5,7 @@
 #include <Engine/ActorChannel.h>
 #include <GameFramework/GameStateBase.h>
 #include "XD_CampInfo.h"
-#include "XD_CampManagerUtility.h"
+#include "XD_CampSystemUtility.h"
 #include "XD_CampSystemInterface.h"
 #include "XD_CampSystemSetting.h"
 

@@ -12,3 +12,8 @@ UXD_CampSystemSetting::UXD_CampSystemSetting()
 	CampInfoClass = UXD_CampInfo::StaticClass();
 	CampRelationshipClass = UXD_CampRelationship::StaticClass();
 }
+
+class UStringTable* UXD_CampSystemSetting::GetCampNameStringTable() const
+{
+	return CampNameStringTable.LoadSynchronous();
+}

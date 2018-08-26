@@ -2,9 +2,20 @@
 
 #include "XD_CampSystemType.h"
 #include "XD_CampManager.h"
-#include "XD_CampManagerUtility.h"
+#include "XD_CampSystemUtility.h"
 #include "XD_CampInfo.h"
+#include "XD_CampSystemSetting.h"
+#include <StringTable.h>
 
+FXD_CampConfig::FXD_CampConfig()
+{
+#if WITH_EDITOR
+	if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
+	{
+		CampName = FText::FromStringTable(CampNameStringTable->GetStringTableId(), FString());
+	}
+#endif
+}
 
 FXD_CampConfig::FXD_CampConfig(const UObject* WorldContextObject, const FText& CampName)
 {

@@ -19,5 +19,6 @@ void UXD_CampRelationship::GetLifetimeReplicatedProps(TArray< class FLifetimePro
 	{
 		BPClass->GetLifetimeBlueprintReplicationList(OutLifetimeProps);
 	}
+	DOREPLIFETIME(UXD_CampRelationship, WithCamp);
 	DOREPLIFETIME(UXD_CampRelationship, RelationshipValue);
 }
