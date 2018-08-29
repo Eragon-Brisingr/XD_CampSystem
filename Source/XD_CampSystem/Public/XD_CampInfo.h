@@ -30,13 +30,14 @@ public:
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "阵营GUID"))
 	FGuid CampGuid;
 
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"))
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"))
 	TArray<class UXD_CampRelationship*> CampRelationships;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营")
+	//假如和别的阵营没有过关系变化，取该值
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "默认对其他阵营关系值", UIMin = "-150", UIMax = "150"))
 	float DefaultCampRelationship = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "同阵营关系值", UIMin = "-150", UIMax = "150"))
 	float SelfCampRelationship = 70.f;
 
 private:

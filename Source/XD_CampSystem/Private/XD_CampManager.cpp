@@ -111,7 +111,7 @@ void UXD_CampManager::RemoveCampByName(const FText& CampName)
 
 		for (UXD_CampInfo* CampInfo : CampList)
 		{
-			int32 CampRelationshipIndex = CampInfo->CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(this) == NeedRemoveCamp; });
+			int32 CampRelationshipIndex = CampInfo->CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == NeedRemoveCamp; });
 			if (CampRelationshipIndex != INDEX_NONE)
 			{
 				CampInfo->CampRelationships.RemoveAt(CampRelationshipIndex);

@@ -47,5 +47,6 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 				}
 			})
 			.InitiallySelectedItem(InitSelectedText)
+			.IsEnabled(!StructPropertyHandle->IsEditConst())
 		];
 }

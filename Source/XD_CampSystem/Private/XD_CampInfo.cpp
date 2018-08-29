@@ -6,13 +6,19 @@
 #include "XD_CampRelationship.h"
 #include "XD_CampSystemUtility.h"
 #include "XD_CampSystemSetting.h"
+#include <StringTable.h>
 
 
 
 
 UXD_CampInfo::UXD_CampInfo()
 {
-
+#if WITH_EDITOR
+	if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
+	{
+		CampName = FText::FromStringTable(CampNameStringTable->GetStringTableId(), FString());
+	}
+#endif
 }
 
 void UXD_CampInfo::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const
@@ -42,7 +48,7 @@ void UXD_CampInfo::ReplicatedCampRelationships(bool& WroteSomething, class UActo
 int32 UXD_CampInfo::AddCampRelationship(UXD_CampInfo * WithCamp)
 {
 	UXD_CampRelationship* CampRelationship = NewObject<UXD_CampRelationship>(GetOuter(), GetDefault<UXD_CampSystemSetting>()->CampRelationshipClass, *FString::Printf(TEXT("%s对%s阵营关系"), *CampName.ToString(), *WithCamp->CampName.ToString()));
-	CampRelationship->WithCamp.SetCamp(WithCamp);
+	CampRelationship->ToCamp = WithCamp;
 	return CampRelationships.Add(CampRelationship);
 }
 
@@ -55,7 +61,7 @@ bool UXD_CampInfo::SetCampRelationshipValue(const UObject* WorldContextObject, U
 			CampSystem_Display_Log("设置的阵营[%s]与本阵营为相同阵营，不能设置阵营间关系", *WithCamp->CampName.ToString());
 			return false;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(WorldContextObject) == WithCamp; });
+		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index == INDEX_NONE)
 		{
 			Index = AddCampRelationship(WithCamp);
@@ -76,7 +82,7 @@ bool UXD_CampInfo::AddCampRelationshipValue(const UObject* WorldContextObject, U
 			CampSystem_Display_Log("设置的阵营[%s]与本阵营为相同阵营，不能设置阵营间关系", *WithCamp->CampName.ToString());
 			return false;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(WorldContextObject) == WithCamp; });
+		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index == INDEX_NONE)
 		{
 			Index = AddCampRelationship(WithCamp);
@@ -97,7 +103,7 @@ bool UXD_CampInfo::ReduceCampRelationshipValue(const UObject* WorldContextObject
 			CampSystem_Display_Log("设置的阵营[%s]与本阵营为相同阵营，不能设置阵营间关系", *WithCamp->CampName.ToString());
 			return false;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(WorldContextObject) == WithCamp; });
+		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index == INDEX_NONE)
 		{
 			Index = AddCampRelationship(WithCamp);
@@ -117,7 +123,7 @@ float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, 
 		{
 			return SelfCampRelationship;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(WorldContextObject) == WithCamp; });
+		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index != INDEX_NONE)
 		{
 			return CampRelationships[Index]->RelationshipValue;
@@ -134,7 +140,7 @@ EXD_CampRelationship UXD_CampInfo::GetCampRelationship(const UObject* WorldConte
 		{
 			return EXD_CampRelationship::SelfCamp;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->WithCamp.GetCamp(WorldContextObject) == WithCamp; });
+		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index != INDEX_NONE)
 		{
 			float RelationshipValue = CampRelationships[Index]->RelationshipValue;

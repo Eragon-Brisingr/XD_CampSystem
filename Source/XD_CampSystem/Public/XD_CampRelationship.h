@@ -22,9 +22,9 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const override;
 
 public:
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "与阵营"))
-	FXD_CampConfig WithCamp;
+	UPROPERTY(SaveGame, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "与阵营"))
+	class UXD_CampInfo* ToCamp;
 
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营友好值"))
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营友好值", UIMin = "-150", UIMax = "150"))
 	float RelationshipValue;
 };
