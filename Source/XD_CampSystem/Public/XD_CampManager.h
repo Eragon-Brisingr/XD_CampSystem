@@ -32,13 +32,17 @@ public:
 
 	virtual bool ReplicateSubobjects(class UActorChannel *Channel, class FOutBunch *Bunch, FReplicationFlags *RepFlags) override;
 
+	virtual void WhenGameInit_Implementation() override;
 	//阵营
 public:
 	static UXD_CampManager* GetCampManager(const UObject* WorldContextObject);
 
- 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Category = "阵营", EditFixedSize, Replicated, meta = (DisplayName = "阵营列表"))
+ 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Replicated, meta = (DisplayName = "阵营列表"))
  	TArray<class UXD_CampInfo*> CampList;
- 
+	
+	UPROPERTY(EditAnywhere, Category = "阵营")
+	class UXD_CampRelationshipGraph* TemplateCampRelationshipGraph;
+
   	UFUNCTION(BlueprintPure, Category = "游戏|阵营")
   	bool IsCampExist(const FText& CampName) const;
   

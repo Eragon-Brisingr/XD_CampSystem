@@ -21,6 +21,16 @@ UXD_CampRelationshipGraph::UXD_CampRelationshipGraph()
 void UXD_CampRelationshipGraph::RebuildGenericGraph()
 {
 	CampList.Empty();
+	for (UGenericGraphNode* Node : AllNodes_Editor)
+	{
+		if (UXD_CampRelationshipGraph_Node* CampNode = Cast<UXD_CampRelationshipGraph_Node>(Node))
+		{
+			if (CampNode->CampInfo)
+			{
+				CampNode->CampInfo->CampRelationships.Empty();
+			}
+		}
+	}
 
 	for (UGenericGraphNode* Node : AllNodes_Editor)
 	{
@@ -33,16 +43,21 @@ void UXD_CampRelationshipGraph::RebuildGenericGraph()
 
 			for (UXD_CampRelationshipGraph_Edge* CampEdge : CampNode->GetEdgesByType<UXD_CampRelationshipGraph_Edge>())
 			{
-				//若选择同等关系，则复制一份关系并反转指向
-				if (CampEdge && CampEdge->CampRelationship && CampEdge->bRelationshipTwoWay)
+				if (CampEdge->CampRelationship)
 				{
-					if (UXD_CampRelationshipGraph_Node* ToCampNode = Cast<UXD_CampRelationshipGraph_Node>(CampEdge->EndNode))
+					CampNode->CampInfo->CampRelationships.Add(CampEdge->CampRelationship);
+
+					//若选择同等关系，则复制一份关系并反转指向
+					if (CampEdge->bRelationshipTwoWay)
 					{
-						if (ToCampNode->CampInfo)
+						if (UXD_CampRelationshipGraph_Node* ToCampNode = Cast<UXD_CampRelationshipGraph_Node>(CampEdge->EndNode))
 						{
-							UXD_CampRelationship* CampRelationship = UXD_ObjectFunctionLibrary::DuplicateObject(CampEdge->CampRelationship, this);
-							CampRelationship->ToCamp = CampNode->CampInfo;
-							ToCampNode->CampInfo->CampRelationships.Add(CampRelationship);
+							if (ToCampNode->CampInfo)
+							{
+								UXD_CampRelationship* CampRelationship = DuplicateObject(CampEdge->CampRelationship, this);
+								CampRelationship->ToCamp = CampNode->CampInfo;
+								ToCampNode->CampInfo->CampRelationships.Add(CampRelationship);
+							}
 						}
 					}
 				}

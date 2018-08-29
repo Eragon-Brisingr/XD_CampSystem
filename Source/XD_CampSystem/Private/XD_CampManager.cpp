@@ -8,6 +8,8 @@
 #include "XD_CampSystemUtility.h"
 #include "XD_CampSystemInterface.h"
 #include "XD_CampSystemSetting.h"
+#include "XD_ObjectFunctionLibrary.h"
+#include "XD_CampRelationshipGraph.h"
 
 UXD_CampManager::UXD_CampManager()
 {
@@ -54,6 +56,27 @@ bool UXD_CampManager::ReplicateSubobjects(class UActorChannel *Channel, class FO
 	}
 
 	return WroteSomething;
+}
+
+void UXD_CampManager::WhenGameInit_Implementation()
+{
+	if (TemplateCampRelationshipGraph)
+	{
+		//复制阵营指向并重置Outer
+		for (UXD_CampInfo* CampInfo : TemplateCampRelationshipGraph->CampList)
+		{
+			CampList.Add(UXD_ObjectFunctionLibrary::DuplicateObject(CampInfo, this));
+		}
+		//修复CampRelationship指向
+		for (UXD_CampInfo* CampInfo : CampList)
+		{
+			for (UXD_CampRelationship*& CampRelationship : CampInfo->CampRelationships)
+			{
+				CampRelationship = UXD_ObjectFunctionLibrary::DuplicateObject(CampRelationship, this);
+				CampRelationship->ToCamp = *CampList.FindByPredicate([&](UXD_CampInfo* Camp) {return Camp->CampName.EqualTo(CampRelationship->ToCamp->CampName); });
+			}
+		}
+	}
 }
 
 UXD_CampManager* UXD_CampManager::GetCampManager(const UObject* WorldContextObject)
