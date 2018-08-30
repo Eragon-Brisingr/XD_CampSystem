@@ -15,5 +15,9 @@ UXD_CampSystemSetting::UXD_CampSystemSetting()
 
 class UStringTable* UXD_CampSystemSetting::GetCampNameStringTable() const
 {
-	return CampNameStringTable.LoadSynchronous();
+	if (CampRelationshipGrap)
+	{
+		return CampRelationshipGrap.LoadSynchronous()->CampNameStringTable;
+	}
+	return nullptr;
 }

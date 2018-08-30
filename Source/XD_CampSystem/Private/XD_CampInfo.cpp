@@ -13,12 +13,7 @@
 
 UXD_CampInfo::UXD_CampInfo()
 {
-#if WITH_EDITOR
-	if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
-	{
-		CampName = FText::FromStringTable(CampNameStringTable->GetStringTableId(), FString());
-	}
-#endif
+
 }
 
 void UXD_CampInfo::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const

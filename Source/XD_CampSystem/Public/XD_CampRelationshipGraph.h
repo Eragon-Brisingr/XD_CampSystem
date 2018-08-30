@@ -19,6 +19,11 @@ public:
 	UPROPERTY()
 	TArray<class UXD_CampInfo*> CampList;
 	
+	UPROPERTY(VisibleAnywhere, Category = "阵营配置", meta = (DisplayName = "阵营名表"))
+	class UStringTable* CampNameStringTable;
+
+	TArray<FText> GetAllCampNames() const;
+
 #if WITH_EDITOR
 	virtual void RebuildGenericGraph() override;
 #endif

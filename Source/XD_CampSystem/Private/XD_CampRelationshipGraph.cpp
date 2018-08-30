@@ -14,6 +14,24 @@ UXD_CampRelationshipGraph::UXD_CampRelationshipGraph()
 #if WITH_EDITOR
 	NodeType = UXD_CampRelationshipGraph_Node::StaticClass();
 #endif
+
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		CampNameStringTable = CreateDefaultSubobject<UStringTable>(TEXT("阵营名表"));
+	}
+}
+
+TArray<FText> UXD_CampRelationshipGraph::GetAllCampNames() const
+{
+	TArray<FText> ValidCampNames;
+	for (UXD_CampInfo* Camp : CampList)
+	{
+		if (Camp)
+		{
+			ValidCampNames.Add(Camp->CampName);
+		}
+	}
+	return ValidCampNames;
 }
 
 #if WITH_EDITOR

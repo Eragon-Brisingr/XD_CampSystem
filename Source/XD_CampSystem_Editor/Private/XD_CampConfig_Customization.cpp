@@ -8,20 +8,19 @@
 #include "XD_CampSystem_EditorUtility.h"
 #include <STextComboBox.h>
 #include <StringTableCore.h>
+#include "XD_CampRelationshipGraph.h"
 
 void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr<IPropertyHandle> CampName_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_STRING_CHECKED(FXD_CampConfig, CampName));
 
-	if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
+	if (!GetDefault<UXD_CampSystemSetting>()->CampRelationshipGrap.IsNull())
 	{
-		CampNameStringTable->GetStringTable()->EnumerateSourceStrings([&](const FString& InKey, const FString& InSourceString)
+		ValidCampNames = GetDefault<UXD_CampSystemSetting>()->CampRelationshipGrap.LoadSynchronous()->GetAllCampNames();
+		for (const FText& ValidCampName : ValidCampNames)
 		{
-			TSharedPtr<FString> CampName = MakeShareable(new FString(InSourceString));
-			CampNameList.Add(CampName);
-			CampNameAndTextKeyMap.Add(CampName, InKey);
-			return true;
-		});
+			CampNameList.Add(MakeShareable(new FString(ValidCampName.ToString())));
+		}
 	}
 
 	FText& CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle);
@@ -40,10 +39,7 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 			{
 				if (SelectInfo == ESelectInfo::OnMouseClick)
 				{
-					if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
-					{
-						CampName_PropertyHandle->SetValue(FText::FromStringTable(CampNameStringTable->GetStringTableId(), CampNameAndTextKeyMap[Selection]));
-					}
+					CampName_PropertyHandle->SetValue(*ValidCampNames.FindByPredicate([&](const FText& CampName) {return CampName.ToString() == *Selection.Get(); }));
 				}
 			})
 			.InitiallySelectedItem(InitSelectedText)

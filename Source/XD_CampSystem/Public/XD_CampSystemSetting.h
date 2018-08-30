@@ -23,8 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
 	TSubclassOf<class UXD_CampRelationship> CampRelationshipClass;
 
-	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
-	TSoftObjectPtr<class UStringTable> CampNameStringTable;
+	UPROPERTY(EditAnywhere, Category = "阵营设置", Config, meta = (DisplayName = "阵营关系图表"))
+	TSoftObjectPtr<class UXD_CampRelationshipGraph> CampRelationshipGrap;
 
 	class UStringTable* GetCampNameStringTable() const;
 };

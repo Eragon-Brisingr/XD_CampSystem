@@ -16,7 +16,7 @@ public:
 	virtual void CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override {}
 
 	TArray<TSharedPtr<FString>> CampNameList;
-	TMap<TSharedPtr<FString>, FString> CampNameAndTextKeyMap;
+	TArray<FText> ValidCampNames;
 
 	TSharedPtr<FString> InitSelectedText;
 };

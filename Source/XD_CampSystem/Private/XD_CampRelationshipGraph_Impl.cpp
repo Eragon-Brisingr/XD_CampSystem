@@ -6,6 +6,8 @@
 #include "XD_CampRelationship.h"
 #include "XD_CampRelationshipGraph.h"
 #include "XD_ObjectFunctionLibrary.h"
+#include <StringTable.h>
+#include <StringTableCore.h>
 
 
 #define LOCTEXT_NAMESPACE "XD_CampSystem"
@@ -27,13 +29,43 @@ FText UXD_CampRelationshipGraph_Node::GetDescription_Implementation() const
 
 TArray<FGenericGraph_NewNodeParamers> UXD_CampRelationshipGraph_Node::GetNodeTemplates_Implementation(UObject* Outer) const
 {
-	UXD_CampRelationshipGraph_Node* Template = NewObject<UXD_CampRelationshipGraph_Node>(Outer);
-	Template->CampInfo = NewObject<UXD_CampInfo>(Outer, GetDefault<UXD_CampSystemSetting>()->CampInfoClass);
-	FGenericGraph_NewNodeParamers GenericGraph_NewNodeParamers;
-	GenericGraph_NewNodeParamers.NodeTemplate = Template;
-	GenericGraph_NewNodeParamers.InNodeCategory = LOCTEXT("阵营", "阵营");
-	GenericGraph_NewNodeParamers.InMenuDesc = LOCTEXT("创建阵营", "创建阵营");
-	return { GenericGraph_NewNodeParamers };
+	if (UXD_CampRelationshipGraph* CampRelationshipGraph = Cast<UXD_CampRelationshipGraph>(Outer))
+	{
+		UStringTable* CampNameStringTable = CampRelationshipGraph->CampNameStringTable;
+		TArray<FGenericGraph_NewNodeParamers> Res;
+
+		TArray<FString> StringTableKeys;
+		CampNameStringTable->GetStringTable()->EnumerateSourceStrings([&](const FString& Key, const FString& SourceString)
+		{
+			if (!CampRelationshipGraph->CampList.ContainsByPredicate([&](UXD_CampInfo* Camp) {return Camp->CampName.ToString() == SourceString; }))
+			{
+				StringTableKeys.Add(Key);
+			}
+			return true;
+		});
+
+		for (const FString& Key : StringTableKeys)
+		{
+			UXD_CampRelationshipGraph_Node* Template = NewObject<UXD_CampRelationshipGraph_Node>(Outer);
+			Template->CampInfo = NewObject<UXD_CampInfo>(Outer, GetDefault<UXD_CampSystemSetting>()->CampInfoClass);
+			if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
+			{
+				Template->CampInfo->CampName = FText::FromStringTable(CampNameStringTable->GetStringTableId(), Key);
+				Template->CampInfo->CampGuid = FGuid::NewGuid();
+			}
+			FGenericGraph_NewNodeParamers GenericGraph_NewNodeParamers;
+			GenericGraph_NewNodeParamers.NodeTemplate = Template;
+			GenericGraph_NewNodeParamers.InNodeCategory = LOCTEXT("创建阵营", "创建阵营");
+			GenericGraph_NewNodeParamers.InMenuDesc = Template->CampInfo->CampName;
+			Res.Add(GenericGraph_NewNodeParamers);
+		}
+
+		return Res;
+	}
+	else
+	{
+		return {};
+	}
 }
 
 TArray<FGenericGraph_NewEdgeParamers> UXD_CampRelationshipGraph_Node::GetEdgeTemplates_Implementation(UObject* Outer) const
@@ -100,7 +132,8 @@ FText UXD_CampRelationshipGraph_Edge::GetDescription_Implementation() const
 	UXD_CampRelationshipGraph_Node* EndCampNode = Cast<UXD_CampRelationshipGraph_Node>(EndNode);
 	if (StartCampNode && StartCampNode->CampInfo && EndCampNode && EndCampNode->CampInfo)
 	{
-		return FText::Format(bRelationshipTwoWay ? LOCTEXT("阵营关系连线描述_双向", "{0} 与 {1}") : LOCTEXT("阵营关系连线描述_单向", "{0} 对 {1}"), StartCampNode->CampInfo->CampName, EndCampNode->CampInfo->CampName);
+		FText TitleDesc = FText::Format(bRelationshipTwoWay ? LOCTEXT("阵营关系连线描述_双向", "{0} 与 {1}") : LOCTEXT("阵营关系连线描述_单向", "{0} 对 {1}"), StartCampNode->CampInfo->CampName, EndCampNode->CampInfo->CampName);
+		return FText::Format(LOCTEXT("CampRelationshipGraph_EdgeDesc", "{0}\n{1}"), TitleDesc, FText::FromString(UXD_ObjectFunctionLibrary::GetObjectPropertysDesc(CampRelationship, UObject::StaticClass())));
 	}
 	return Super::GetNodeTitle_Implementation();
 }

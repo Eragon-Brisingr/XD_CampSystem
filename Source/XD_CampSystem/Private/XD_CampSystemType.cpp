@@ -9,12 +9,7 @@
 
 FXD_CampConfig::FXD_CampConfig()
 {
-#if WITH_EDITOR
-	if (UStringTable* CampNameStringTable = GetDefault<UXD_CampSystemSetting>()->GetCampNameStringTable())
-	{
-		CampName = FText::FromStringTable(CampNameStringTable->GetStringTableId(), FString());
-	}
-#endif
+
 }
 
 FXD_CampConfig::FXD_CampConfig(const UObject* WorldContextObject, const FText& CampName)
