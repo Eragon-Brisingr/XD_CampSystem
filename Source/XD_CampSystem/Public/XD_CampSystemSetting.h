@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(Config = "XD_CampSystemSetting")
+UCLASS(Config = "XD_CampSystemSetting", defaultconfig)
 class XD_CAMPSYSTEM_API UXD_CampSystemSetting : public UObject
 {
 	GENERATED_BODY()
