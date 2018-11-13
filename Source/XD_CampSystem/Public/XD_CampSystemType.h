@@ -20,7 +20,7 @@ enum class EXD_CampRelationship :uint8
 
 //持久化所属阵营信息
 USTRUCT(BlueprintType, meta = (HasNativeMake = "XD_CampSystemFunctionLibrary.MakeCampConfig", HasNativeBreak = "XD_CampSystemFunctionLibrary.BreakCampConfig"))
-struct FXD_CampConfig
+struct XD_CAMPSYSTEM_API FXD_CampConfig
 {
 	GENERATED_BODY()
 

@@ -23,6 +23,7 @@ class XD_CAMPSYSTEM_API IXD_CampSystem_GameStateInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent, Category = "阵营")
-	class UXD_CampManager* GetCampManager();
-	virtual class UXD_CampManager* GetCampManager_Implementation() { return nullptr; }
+	class UXD_CampManager* GetCampManager() const;
+	virtual class UXD_CampManager* GetCampManager_Implementation() const { return nullptr; }
+	static UXD_CampManager* GetCampManager(UObject* Obj) { return IXD_CampSystem_GameStateInterface::Execute_GetCampManager(Obj); }
 };

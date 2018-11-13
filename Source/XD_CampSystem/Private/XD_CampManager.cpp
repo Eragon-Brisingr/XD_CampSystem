@@ -85,7 +85,7 @@ UXD_CampManager* UXD_CampManager::GetCampManager(const UObject* WorldContextObje
 	{
 		if (GameState->Implements<UXD_CampSystem_GameStateInterface>())
 		{
-			return IXD_CampSystem_GameStateInterface::Execute_GetCampManager(GameState);
+			return IXD_CampSystem_GameStateInterface::GetCampManager(GameState);
 		}
 		else
 		{
