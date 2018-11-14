@@ -42,7 +42,7 @@ public:
 	class UXD_CampRelationship* CampRelationship;
 
 	//使用相同的关系配置
-	UPROPERTY(EditAnywhere, Category = "阵营关系", meta = (DisplayName = "同等关系"))
+	UPROPERTY(EditAnywhere, Category = "阵营关系_高级", meta = (DisplayName = "同等关系"))
 	uint8 bRelationshipTwoWay : 1;
 
 	virtual FText GetDescription_Implementation() const override;

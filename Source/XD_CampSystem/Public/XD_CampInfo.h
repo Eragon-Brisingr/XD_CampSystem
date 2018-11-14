@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "XD_CampSystemType.h"
+#include "Engine/EngineTypes.h"
 #include "XD_CampInfo.generated.h"
 
 /**
@@ -15,7 +16,7 @@ class XD_CAMPSYSTEM_API UXD_CampInfo : public UObject
 {
 	GENERATED_BODY()
 public:
-	UXD_CampInfo();
+	UXD_CampInfo(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual bool IsSupportedForNetworking() const override { return true; }
 
@@ -30,15 +31,16 @@ public:
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "阵营GUID"))
 	FGuid CampGuid;
 
-	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"))
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"), Instanced)
 	TArray<class UXD_CampRelationship*> CampRelationships;
 	
-	//假如和别的阵营没有过关系变化，取该值
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "默认对其他阵营关系值", UIMin = "-150", UIMax = "150"))
-	float DefaultCampRelationship = 0.f;
+	//假如和别的阵营没有过关系变化，取默认对其他阵营关系
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "默认对其他阵营关系"), Replicated)
+	class UXD_CampRelationship* DefaultCampRelationship;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "同阵营关系值", UIMin = "-150", UIMax = "150"))
-	float SelfCampRelationship = 70.f;
+	//同阵营关系
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "同阵营关系"), Replicated)
+	class UXD_CampRelationship* SelfCampRelationship;
 
 private:
 	int32 AddCampRelationship(UXD_CampInfo * WithCamp);
@@ -56,8 +58,10 @@ public:
 	float GetCampRelationshipValue(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
-	EXD_CampRelationship GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
+	virtual EXD_CampRelationship GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 
+	UFUNCTION(BlueprintCallable, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
+	class UXD_CampRelationship* GetCampRelationshipRef(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 protected:
 	virtual EXD_CampRelationship ExplainCampRelationship(float RelationshipValue) const;
 public:

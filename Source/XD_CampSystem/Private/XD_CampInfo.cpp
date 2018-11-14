@@ -11,9 +11,13 @@
 
 
 
-UXD_CampInfo::UXD_CampInfo()
+UXD_CampInfo::UXD_CampInfo(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer)
 {
-
+	DefaultCampRelationship = CreateDefaultSubobject<UXD_CampRelationship>(GET_MEMBER_NAME_CHECKED(UXD_CampInfo, DefaultCampRelationship));
+	SelfCampRelationship = CreateDefaultSubobject<UXD_CampRelationship>(GET_MEMBER_NAME_CHECKED(UXD_CampInfo, SelfCampRelationship));
+	SelfCampRelationship->ToCamp = this;
+	SelfCampRelationship->RelationshipValue = 70.f;
 }
 
 void UXD_CampInfo::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const
@@ -27,6 +31,8 @@ void UXD_CampInfo::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > 
 
 	DOREPLIFETIME(UXD_CampInfo, CampName);
 	DOREPLIFETIME(UXD_CampInfo, CampRelationships);
+	DOREPLIFETIME(UXD_CampInfo, SelfCampRelationship);
+	DOREPLIFETIME(UXD_CampInfo, DefaultCampRelationship);
 }
 
 void UXD_CampInfo::ReplicatedCampRelationships(bool& WroteSomething, class UActorChannel * Channel, class FOutBunch * Bunch, FReplicationFlags * RepFlags)
@@ -37,6 +43,14 @@ void UXD_CampInfo::ReplicatedCampRelationships(bool& WroteSomething, class UActo
 		{
 			WroteSomething |= Channel->ReplicateSubobject(CampRelationship, *Bunch, *RepFlags);
 		}
+	}
+	if (SelfCampRelationship)
+	{
+		WroteSomething |= Channel->ReplicateSubobject(SelfCampRelationship, *Bunch, *RepFlags);
+	}
+	if (DefaultCampRelationship)
+	{
+		WroteSomething |= Channel->ReplicateSubobject(DefaultCampRelationship, *Bunch, *RepFlags);
 	}
 }
 
@@ -116,7 +130,7 @@ float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, 
 	{
 		if (this == WithCamp)
 		{
-			return SelfCampRelationship;
+			return SelfCampRelationship->RelationshipValue;
 		}
 		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
 		if (Index != INDEX_NONE)
@@ -124,7 +138,7 @@ float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, 
 			return CampRelationships[Index]->RelationshipValue;
 		}
 	}
-	return DefaultCampRelationship;
+	return DefaultCampRelationship->RelationshipValue;
 }
 
 EXD_CampRelationship UXD_CampInfo::GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const
@@ -135,14 +149,24 @@ EXD_CampRelationship UXD_CampInfo::GetCampRelationship(const UObject* WorldConte
 		{
 			return EXD_CampRelationship::SelfCamp;
 		}
-		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
-		if (Index != INDEX_NONE)
-		{
-			float RelationshipValue = CampRelationships[Index]->RelationshipValue;
-			return ExplainCampRelationship(RelationshipValue);
-		}
+		UXD_CampRelationship* CampRelationship = GetCampRelationshipRef(WorldContextObject, WithCamp);
+		return ExplainCampRelationship(CampRelationship->RelationshipValue);
 	}
-	return ExplainCampRelationship(DefaultCampRelationship);
+	return EXD_CampRelationship::Neutral;
+}
+
+class UXD_CampRelationship* UXD_CampInfo::GetCampRelationshipRef(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const
+{
+	if (this == WithCamp)
+	{
+		return SelfCampRelationship;
+	}
+	int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });
+	if (Index != INDEX_NONE)
+	{
+		return CampRelationships[Index];
+	}
+	return DefaultCampRelationship;
 }
 
 EXD_CampRelationship UXD_CampInfo::ExplainCampRelationship(float RelationshipValue) const
