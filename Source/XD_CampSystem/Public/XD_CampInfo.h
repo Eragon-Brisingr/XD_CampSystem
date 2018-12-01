@@ -35,11 +35,11 @@ public:
 	TArray<class UXD_CampRelationship*> CampRelationships;
 	
 	//假如和别的阵营没有过关系变化，取默认对其他阵营关系
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "默认对其他阵营关系"), Replicated)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "默认对其他阵营关系"), Replicated, SaveGame)
 	class UXD_CampRelationship* DefaultCampRelationship;
 
 	//同阵营关系
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "同阵营关系"), Replicated)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "同阵营关系"), Replicated, SaveGame)
 	class UXD_CampRelationship* SelfCampRelationship;
 
 private:
