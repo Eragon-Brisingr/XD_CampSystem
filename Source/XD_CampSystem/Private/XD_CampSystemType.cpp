@@ -36,29 +36,29 @@ class UXD_CampInfo* FXD_CampConfig::GetCamp(const UObject* WorldContextObject) c
 	return CampInfo;
 }
 
-bool FXD_CampConfig::SetCamp(const UObject* WorldContextObject, const FText& CampName)
+bool FXD_CampConfig::SetCamp(const UObject* WorldContextObject, const FText& InCampName)
 {
 	if (UXD_CampManager* CampManager = UXD_CampManager::GetCampManager(WorldContextObject))
 	{
-		if (UXD_CampInfo* CampInfo = CampManager->FindCampByName(CampName))
+		if (UXD_CampInfo* NewCampInfo = CampManager->FindCampByName(InCampName))
 		{
-			this->CampInfo = CampInfo;
-			this->CampName = CampName;
-			this->CampGuid = CampInfo->CampGuid;
+			CampInfo = NewCampInfo;
+			CampName = InCampName;
+			CampGuid = NewCampInfo->CampGuid;
 			return true;
 		}
 	}
-	CampSystem_Error_Log("设置Camp为%s无效", *CampName.ToString());
+	CampSystem_Error_Log("设置Camp为%s无效", *InCampName.ToString());
 	return false;
 }
 
-bool FXD_CampConfig::SetCamp(class UXD_CampInfo* CampInfo)
+bool FXD_CampConfig::SetCamp(class UXD_CampInfo* InCampInfo)
 {
-	if (CampInfo)
+	if (InCampInfo)
 	{
-		this->CampInfo = CampInfo;
-		CampName = CampInfo->CampName;
-		CampGuid = CampInfo->CampGuid;
+		CampInfo = InCampInfo;
+		CampName = InCampInfo->CampName;
+		CampGuid = InCampInfo->CampGuid;
 		return true;
 	}
 	return false;

@@ -31,18 +31,20 @@ TArray<FGenericGraph_NewNodeParamers> UXD_CampRelationshipGraph_Node::GetNodeTem
 {
 	if (UXD_CampRelationshipGraph* CampRelationshipGraph = Cast<UXD_CampRelationshipGraph>(Outer))
 	{
-		UStringTable* CampNameStringTable = CampRelationshipGraph->CampNameStringTable;
 		TArray<FGenericGraph_NewNodeParamers> Res;
-
 		TArray<FString> StringTableKeys;
-		CampNameStringTable->GetStringTable()->EnumerateSourceStrings([&](const FString& Key, const FString& SourceString)
 		{
-			if (!CampRelationshipGraph->CampList.ContainsByPredicate([&](UXD_CampInfo* Camp) {return Camp->CampName.ToString() == SourceString; }))
+			UStringTable* CampNameStringTable = CampRelationshipGraph->CampNameStringTable;
+
+			CampNameStringTable->GetStringTable()->EnumerateSourceStrings([&](const FString& Key, const FString& SourceString)
 			{
-				StringTableKeys.Add(Key);
-			}
-			return true;
-		});
+				if (!CampRelationshipGraph->CampList.ContainsByPredicate([&](UXD_CampInfo* Camp) {return Camp->CampName.ToString() == SourceString; }))
+				{
+					StringTableKeys.Add(Key);
+				}
+				return true;
+			});
+		}
 
 		for (const FString& Key : StringTableKeys)
 		{
