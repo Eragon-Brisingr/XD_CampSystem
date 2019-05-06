@@ -23,9 +23,11 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 		}
 	}
 
-	FText& CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle);
-	int32 Index = CampNameList.IndexOfByPredicate([&](TSharedPtr<FString> e) {return *e.Get() == CampName.ToString(); });
-	InitSelectedText = Index != INDEX_NONE ? CampNameList[Index] : MakeShareable(new FString(FString::Printf(TEXT("[%s]_无效的阵营名"), *CampName.ToString())));
+	if (FText* CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle))
+	{
+		int32 Index = CampNameList.IndexOfByPredicate([&](TSharedPtr<FString> e) {return *e.Get() == CampName->ToString(); });
+		InitSelectedText = Index != INDEX_NONE ? CampNameList[Index] : MakeShareable(new FString(FString::Printf(TEXT("[%s]_无效的阵营名"), *CampName->ToString())));
+	}
 
 	HeaderRow.NameContent()
 		[
