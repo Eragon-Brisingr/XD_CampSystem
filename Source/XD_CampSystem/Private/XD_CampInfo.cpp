@@ -137,8 +137,9 @@ float UXD_CampInfo::GetCampRelationshipValue(const UObject* WorldContextObject, 
 		{
 			return CampRelationships[Index]->RelationshipValue;
 		}
+		return DefaultCampRelationship->RelationshipValue;
 	}
-	return DefaultCampRelationship->RelationshipValue;
+	return 0.f;
 }
 
 EXD_CampRelationship UXD_CampInfo::GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const
