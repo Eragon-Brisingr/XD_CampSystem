@@ -6,6 +6,9 @@
 #include "GenericGraph/GenericGraph.h"
 #include "XD_CampRelationshipGraph.generated.h"
 
+class UXD_CampInfo;
+class UStringTable;
+
 /**
  * 
  */
@@ -17,10 +20,10 @@ public:
 	UXD_CampRelationshipGraph();
 	
 	UPROPERTY()
-	TArray<class UXD_CampInfo*> CampList;
+	TArray<UXD_CampInfo*> CampList;
 	
 	UPROPERTY(VisibleAnywhere, Category = "阵营配置", meta = (DisplayName = "阵营名表"))
-	class UStringTable* CampNameStringTable;
+	UStringTable* CampNameStringTable;
 
 	TArray<FText> GetAllCampNames() const;
 

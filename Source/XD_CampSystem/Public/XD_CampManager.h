@@ -8,6 +8,9 @@
 #include "XD_CampSystemType.h"
 #include "XD_CampManager.generated.h"
 
+class UXD_CampInfo;
+class UXD_CampRelationshipGraph;
+
 /**
  * 
  */
@@ -38,10 +41,10 @@ public:
 	static UXD_CampManager* GetCampManager(const UObject* WorldContextObject);
 
  	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Replicated, meta = (DisplayName = "阵营列表"))
- 	TArray<class UXD_CampInfo*> CampList;
+ 	TArray<UXD_CampInfo*> CampList;
 	
 	UPROPERTY(EditAnywhere, Category = "阵营")
-	class UXD_CampRelationshipGraph* TemplateCampRelationshipGraph;
+	UXD_CampRelationshipGraph* TemplateCampRelationshipGraph;
 
   	UFUNCTION(BlueprintPure, Category = "游戏|阵营")
   	bool IsCampExist(const FText& CampName) const;
@@ -53,11 +56,10 @@ public:
   	void RemoveCampByName(const FText& CampName);
 
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营")
-	class UXD_CampInfo* FindCampByName(const FText& CampName) const;
+	UXD_CampInfo* FindCampByName(const FText& CampName) const;
 
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营")
-	class UXD_CampInfo* FindCampByGuid(const FGuid& Guid) const;
-
+	UXD_CampInfo* FindCampByGuid(const FGuid& Guid) const;
 public:
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营")
 	bool SetCampRelationshipValue(UXD_CampInfo* Camp, UXD_CampInfo* WithCamp, float Value, bool Between);

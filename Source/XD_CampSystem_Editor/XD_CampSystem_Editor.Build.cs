@@ -39,6 +39,11 @@ public class XD_CampSystem_Editor : ModuleRules
 				"Slate",
 				"SlateCore",
                 "UnrealEd",
+                
+                "EditorStyle",
+                "AssetTools",
+                "GraphEditor",
+                "ApplicationCore",
 
                 "XD_CampSystem",
                 "XD_SaveGameSystem",

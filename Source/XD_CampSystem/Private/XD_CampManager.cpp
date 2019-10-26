@@ -10,6 +10,7 @@
 #include "XD_CampSystemSetting.h"
 #include "XD_ObjectFunctionLibrary.h"
 #include "XD_CampRelationshipGraph.h"
+#include "XD_CampRelationship.h"
 
 UXD_CampManager::UXD_CampManager()
 {

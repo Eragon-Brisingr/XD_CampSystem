@@ -8,6 +8,8 @@
 #include "Engine/EngineTypes.h"
 #include "XD_CampInfo.generated.h"
 
+class UXD_CampRelationship;
+
 /**
  * 
  */
@@ -32,15 +34,15 @@ public:
 	FGuid CampGuid;
 
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"), Instanced)
-	TArray<class UXD_CampRelationship*> CampRelationships;
+	TArray<UXD_CampRelationship*> CampRelationships;
 	
 	//假如和别的阵营没有过关系变化，取默认对其他阵营关系
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "默认对其他阵营关系"), Replicated, SaveGame)
-	class UXD_CampRelationship* DefaultCampRelationship;
+	UXD_CampRelationship* DefaultCampRelationship;
 
 	//同阵营关系
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "同阵营关系"), Replicated, SaveGame)
-	class UXD_CampRelationship* SelfCampRelationship;
+	UXD_CampRelationship* SelfCampRelationship;
 
 private:
 	int32 AddCampRelationship(UXD_CampInfo * WithCamp);
@@ -61,7 +63,7 @@ public:
 	virtual EXD_CampRelationship GetCampRelationship(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
-	class UXD_CampRelationship* GetCampRelationshipRef(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
+	UXD_CampRelationship* GetCampRelationshipRef(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 protected:
 	virtual EXD_CampRelationship ExplainCampRelationship(float RelationshipValue) const;
 public:
