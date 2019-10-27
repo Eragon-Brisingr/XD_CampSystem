@@ -11,5 +11,5 @@
  */
 DECLARE_LOG_CATEGORY_EXTERN(XD_CampSystem_Log, Log, All);
 #define CampSystem_Display_Log(Format, ...) UE_LOG(XD_CampSystem_Log, Log, TEXT(Format), ##__VA_ARGS__)
-#define CampSystem_Warning_LOG(Format, ...) UE_LOG(XD_CampSystem_Log, Warning, TEXT(Format), ##__VA_ARGS__)
+#define CampSystem_Warning_Log(Format, ...) UE_LOG(XD_CampSystem_Log, Warning, TEXT(Format), ##__VA_ARGS__)
 #define CampSystem_Error_Log(Format, ...) UE_LOG(XD_CampSystem_Log, Error, TEXT(Format), ##__VA_ARGS__)

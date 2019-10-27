@@ -9,6 +9,7 @@
 /**
  *
  */
+ //FConnectionParams 中bUserFlag1代表绘制双向箭头
 class FXD_CampEditor_ConnectionDrawingPolicy : public FConnectionDrawingPolicy
 {
 
@@ -26,6 +27,8 @@ public:
 	virtual void DrawSplineWithArrow(const FVector2D& StartPoint, const FVector2D& EndPoint, const FConnectionParams& Params) override;
 	virtual void DrawPreviewConnector(const FGeometry& PinGeometry, const FVector2D& StartPoint, const FVector2D& EndPoint, UEdGraphPin* Pin) override;
 	virtual FVector2D ComputeSplineTangent(const FVector2D& Start, const FVector2D& End) const override;
+	// 用来确定画线的两个pin
+	void DetermineLinkGeometry(FArrangedChildren& ArrangedNodes, TSharedRef<SWidget>& OutputPinWidget, UEdGraphPin* OutputPin, UEdGraphPin* InputPin, FArrangedWidget*& StartWidgetGeometry, FArrangedWidget*& EndWidgetGeometry) override;
 	// End of FConnectionDrawingPolicy interface
 
 protected:

@@ -12,6 +12,12 @@ FXD_CampConfig::FXD_CampConfig()
 
 }
 
+FXD_CampConfig::FXD_CampConfig(const UXD_CampInfo* InCampInfo)
+	: CampName(InCampInfo->CampName), CampGuid(InCampInfo->CampGuid)
+{
+
+}
+
 FXD_CampConfig::FXD_CampConfig(const UObject* WorldContextObject, const FText& CampName)
 {
 	SetCamp(WorldContextObject, CampName);

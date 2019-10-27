@@ -22,3 +22,8 @@ void UXD_CampRelationship::GetLifetimeReplicatedProps(TArray< class FLifetimePro
 	DOREPLIFETIME(UXD_CampRelationship, ToCamp);
 	DOREPLIFETIME(UXD_CampRelationship, RelationshipValue);
 }
+
+UXD_CampInfo* UXD_CampRelationship::GetOwningCamp() const
+{
+	return CastChecked<UXD_CampInfo>(GetOuter());
+}

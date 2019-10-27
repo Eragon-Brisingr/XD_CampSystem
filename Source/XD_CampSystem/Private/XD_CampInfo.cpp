@@ -7,6 +7,8 @@
 #include "XD_CampSystemUtility.h"
 #include "XD_CampSystemSetting.h"
 #include <StringTable.h>
+#include "Engine/BlueprintGeneratedClass.h"
+#include "XD_CampGraph.h"
 
 
 
@@ -54,9 +56,19 @@ void UXD_CampInfo::ReplicatedCampRelationships(bool& WroteSomething, class UActo
 	}
 }
 
+void UXD_CampInfo::SetGraph(UXD_CampGraph* InGraph)
+{
+	Rename(nullptr, InGraph);
+}
+
+UXD_CampGraph* UXD_CampInfo::GetGraph()
+{
+	return CastChecked<UXD_CampGraph>(GetOuter());
+}
+
 int32 UXD_CampInfo::AddCampRelationship(UXD_CampInfo * WithCamp)
 {
-	UXD_CampRelationship* CampRelationship = NewObject<UXD_CampRelationship>(GetOuter(), GetDefault<UXD_CampSystemSetting>()->CampRelationshipClass, *FString::Printf(TEXT("%s对%s阵营关系"), *CampName.ToString(), *WithCamp->CampName.ToString()));
+	UXD_CampRelationship* CampRelationship = NewObject<UXD_CampRelationship>(GetOuter(), GetDefault<UXD_CampSystemSetting>()->CampRelationshipClass.LoadSynchronous(), *FString::Printf(TEXT("%s对%s阵营关系"), *CampName.ToString(), *WithCamp->CampName.ToString()));
 	CampRelationship->ToCamp = WithCamp;
 	return CampRelationships.Add(CampRelationship);
 }
@@ -88,7 +100,7 @@ bool UXD_CampInfo::AddCampRelationshipValue(const UObject* WorldContextObject, U
 	{
 		if (this == WithCamp)
 		{
-			CampSystem_Display_Log("设置的阵营[%s]与本阵营为相同阵营，不能设置阵营间关系", *WithCamp->CampName.ToString());
+			CampSystem_Warning_Log("设置的阵营[%s]与本阵营为相同阵营，不能设置阵营间关系", *WithCamp->CampName.ToString());
 			return false;
 		}
 		int32 Index = CampRelationships.IndexOfByPredicate([&](UXD_CampRelationship* CampRelationship) {return CampRelationship->ToCamp == WithCamp; });

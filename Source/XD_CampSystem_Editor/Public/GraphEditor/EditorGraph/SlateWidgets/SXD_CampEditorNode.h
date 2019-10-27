@@ -21,13 +21,8 @@ public:
 	void CreatePinWidgets() override;
 	void AddPin(const TSharedRef<SGraphPin>& PinToAdd) override;
 	bool IsNameReadOnly() const override;
-	void OnNameTextCommited(const FText& InText, ETextCommit::Type CommitInfo);
-
 protected:
-
 	TSharedPtr<SBox> ContentWidget;
-    TSharedPtr<STextBlock> NodeHeader;
 
 	virtual void CreateContent();
-    virtual void CreateHeader();
 };

@@ -9,6 +9,7 @@
 #include "XD_CampInfo.generated.h"
 
 class UXD_CampRelationship;
+class UXD_CampGraph;
 
 /**
  * 
@@ -26,14 +27,17 @@ public:
 
 	virtual void ReplicatedCampRelationships(bool& WroteSomething, class UActorChannel * Channel, class FOutBunch * Bunch, FReplicationFlags * RepFlags);
 public:
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营名"))
+	void SetGraph(UXD_CampGraph* InGraph);
+	UXD_CampGraph* GetGraph();
+public:
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营名"), AdvancedDisplay = true)
 	FText CampName;
 
 	//考虑阵营更名情况，使用Guid作为阵营唯一信息
-	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "阵营GUID"))
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", meta = (DisplayName = "阵营GUID"), AdvancedDisplay = true)
 	FGuid CampGuid;
 
-	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"), Instanced)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite, EditFixedSize, Replicated, Category = "阵营", meta = (DisplayName = "阵营关系列表"), Instanced, AdvancedDisplay = true)
 	TArray<UXD_CampRelationship*> CampRelationships;
 	
 	//假如和别的阵营没有过关系变化，取默认对其他阵营关系
@@ -43,7 +47,6 @@ public:
 	//同阵营关系
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Instanced, meta = (DisplayName = "同阵营关系"), Replicated, SaveGame)
 	UXD_CampRelationship* SelfCampRelationship;
-
 private:
 	int32 AddCampRelationship(UXD_CampInfo * WithCamp);
 public:
@@ -66,7 +69,5 @@ public:
 	UXD_CampRelationship* GetCampRelationshipRef(const UObject* WorldContextObject, UXD_CampInfo* WithCamp) const;
 protected:
 	virtual EXD_CampRelationship ExplainCampRelationship(float RelationshipValue) const;
-public:
-
 };
 

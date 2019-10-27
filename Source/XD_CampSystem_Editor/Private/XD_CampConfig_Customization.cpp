@@ -8,19 +8,16 @@
 #include "XD_CampSystem_EditorUtility.h"
 #include <STextComboBox.h>
 #include <StringTableCore.h>
-#include "XD_CampRelationshipGraph.h"
+#include "XD_CampGraph.h"
+#include "XD_CampInfo.h"
 
 void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr<IPropertyHandle> CampName_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampName));
 
-	if (!GetDefault<UXD_CampSystemSetting>()->CampRelationshipGrap.IsNull())
+	if (!GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.IsNull())
 	{
-		ValidCampNames = GetDefault<UXD_CampSystemSetting>()->CampRelationshipGrap.LoadSynchronous()->GetAllCampNames();
-		for (const FText& ValidCampName : ValidCampNames)
-		{
-			CampNameList.Add(MakeShareable(new FString(ValidCampName.ToString())));
-		}
+		CampNameList = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous()->GetAllCampNames();
 	}
 
 	if (FText* CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle))
@@ -41,7 +38,15 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 			{
 				if (SelectInfo == ESelectInfo::OnMouseClick)
 				{
-					CampName_PropertyHandle->SetValue(*ValidCampNames.FindByPredicate([&](const FText& CampName) {return CampName.ToString() == *Selection.Get(); }));
+					UXD_CampGraph* CampGraph = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous();
+					if (UXD_CampInfo** P_CampInfo = CampGraph->CampList.FindByPredicate([&](const UXD_CampInfo* E) {return E->CampName.ToString() == *Selection.Get(); }))
+					{
+						if (UXD_CampInfo* CampInfo = *P_CampInfo)
+						{
+							CampName_PropertyHandle->SetValue(CampInfo->CampName);
+							FPropertyCustomizeHelper::SetValue(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampGuid)), CampInfo->CampGuid);
+						}
+					}
 				}
 			})
 			.InitiallySelectedItem(InitSelectedText)

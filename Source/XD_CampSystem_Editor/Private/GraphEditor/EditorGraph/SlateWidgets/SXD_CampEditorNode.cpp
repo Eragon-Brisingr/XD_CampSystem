@@ -59,12 +59,6 @@ void SXD_CampEditorNode::UpdateGraphNode()
 						.HAlign(HAlign_Center)
 						.AutoHeight()
 						[
-							SAssignNew(NodeHeader, STextBlock)
-						]
-						+ SVerticalBox::Slot()
-						.HAlign(HAlign_Center)
-						.AutoHeight()
-						[
 							SAssignNew(InlineEditableText, SInlineEditableTextBlock)
 							.Style(FEditorStyle::Get(), "Graph.StateNode.NodeTitleInlineEditableText")
 							.Text(NodeTitle.Get(), &SNodeTitle::GetHeadTitle)
@@ -130,7 +124,6 @@ void SXD_CampEditorNode::UpdateGraphNode()
 
 	CreatePinWidgets();
 	CreateContent();
-    CreateHeader();
 }
 
 void SXD_CampEditorNode::CreatePinWidgets()
@@ -181,38 +174,12 @@ bool SXD_CampEditorNode::IsNameReadOnly() const
 	return false;
 }
 
-void SXD_CampEditorNode::OnNameTextCommited(const FText & InText, ETextCommit::Type CommitInfo)
-{
-	UXD_CampGraph_EditorNode* UEdNode = CastChecked<UXD_CampGraph_EditorNode>(GraphNode);
-
-	if (UEdNode)
-		if (UEdNode->RenameUniqueNode(InText))
-		{
-			UpdateGraphNode();
-            NodeHeader.Get()->SetVisibility(EVisibility::Visible);
-			SGraphNode::OnNameTextCommited(InText, CommitInfo);
-		}
-
-}
-
 void SXD_CampEditorNode::CreateContent()
 {
 	UXD_CampGraph_EditorNode* Node = Cast<UXD_CampGraph_EditorNode>(GraphNode);
 
-	ContentWidget->SetContent(Node->GetContentWidget().ToSharedRef());
+	ContentWidget->SetContent(Node->GetContentWidget());
 	ContentWidget->SetMinDesiredWidth(200.f);
-}
-
-void SXD_CampEditorNode::CreateHeader()
-{
-    NodeHeader.Get()->SetText(GraphNode->GetNodeTitle(ENodeTitleType::MenuTitle));
-
-    UXD_CampGraph_EditorNode* UEdNode = CastChecked<UXD_CampGraph_EditorNode>(GraphNode);
-
-    if (UEdNode)
-        NodeHeader.Get()->SetVisibility((UEdNode->GetEdNodeName().IsEmpty()) ? EVisibility::Collapsed : EVisibility::Visible);
-    else
-        CampSystemEditor_Error_Log("An error occurred when creating the slate node headers");
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

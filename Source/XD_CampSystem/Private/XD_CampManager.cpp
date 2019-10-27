@@ -9,8 +9,8 @@
 #include "XD_CampSystemInterface.h"
 #include "XD_CampSystemSetting.h"
 #include "XD_ObjectFunctionLibrary.h"
-#include "XD_CampRelationshipGraph.h"
 #include "XD_CampRelationship.h"
+#include "XD_CampGraph.h"
 
 UXD_CampManager::UXD_CampManager()
 {
@@ -61,10 +61,11 @@ bool UXD_CampManager::ReplicateSubobjects(class UActorChannel *Channel, class FO
 
 void UXD_CampManager::WhenGameInit_Implementation()
 {
-	if (TemplateCampRelationshipGraph)
+	UXD_CampGraph* CampGraph = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous();
+	if (CampGraph)
 	{
 		//复制阵营指向并重置Outer
-		for (UXD_CampInfo* CampInfo : TemplateCampRelationshipGraph->CampList)
+		for (UXD_CampInfo* CampInfo : CampGraph->CampList)
 		{
 			CampList.Add(UXD_ObjectFunctionLibrary::DuplicateObject(CampInfo, this));
 		}
@@ -92,11 +93,11 @@ UXD_CampManager* UXD_CampManager::GetCampManager(const UObject* WorldContextObje
 		}
 		else
 		{
-			CampSystem_Warning_LOG("请在GameState中实现XD_CampSystemInterface接口并实现GetCampManager");
+			CampSystem_Warning_Log("请在GameState中实现XD_CampSystemInterface接口并实现GetCampManager");
 			return GameState->FindComponentByClass<UXD_CampManager>();
 		}
 	}
-	CampSystem_Warning_LOG("请在GameState中添加XD_CampManager组件，实现XD_CampSystemInterface接口并实现GetCampManager");
+	CampSystem_Warning_Log("请在GameState中添加XD_CampManager组件，实现XD_CampSystemInterface接口并实现GetCampManager");
 	return nullptr;
 }
 
@@ -120,7 +121,7 @@ void UXD_CampManager::AddCamp(const FText& CampName)
 	}
 	else
 	{
-		UXD_CampInfo* CampInfo = NewObject<UXD_CampInfo>(this, GetDefault<UXD_CampSystemSetting>()->CampInfoClass, FName(*CampName.ToString()));
+		UXD_CampInfo* CampInfo = NewObject<UXD_CampInfo>(this, GetDefault<UXD_CampSystemSetting>()->CampInfoClass.LoadSynchronous(), FName(*CampName.ToString()));
 		CampInfo->CampName = CampName;
 		CampInfo->CampGuid = FGuid::NewGuid();
 		CampList.Add(CampInfo);
@@ -190,10 +191,7 @@ bool UXD_CampManager::SetCampRelationshipValue(UXD_CampInfo* Camp, UXD_CampInfo*
 			{
 				WithCamp->SetCampRelationshipValue(this, Camp, Value);
 			}
-			else
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 	return false;
@@ -209,10 +207,7 @@ bool UXD_CampManager::AddCampRelationshipValue(UXD_CampInfo* Camp, UXD_CampInfo*
 			{
 				WithCamp->AddCampRelationshipValue(this, Camp, AddValue);
 			}
-			else
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 	return false;
@@ -228,10 +223,7 @@ bool UXD_CampManager::ReduceCampRelationshipValue(UXD_CampInfo* Camp, UXD_CampIn
 			{
 				WithCamp->ReduceCampRelationshipValue(this, Camp, ReduceValue);
 			}
-			else
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 	return false;

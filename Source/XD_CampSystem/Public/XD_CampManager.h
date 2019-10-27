@@ -9,7 +9,6 @@
 #include "XD_CampManager.generated.h"
 
 class UXD_CampInfo;
-class UXD_CampRelationshipGraph;
 
 /**
  * 
@@ -43,9 +42,6 @@ public:
  	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Category = "阵营", Replicated, meta = (DisplayName = "阵营列表"))
  	TArray<UXD_CampInfo*> CampList;
 	
-	UPROPERTY(EditAnywhere, Category = "阵营")
-	UXD_CampRelationshipGraph* TemplateCampRelationshipGraph;
-
   	UFUNCTION(BlueprintPure, Category = "游戏|阵营")
   	bool IsCampExist(const FText& CampName) const;
   

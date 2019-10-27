@@ -5,7 +5,7 @@
 #include "XD_PropertyCustomizationEx.h"
 #include "XD_CampConfig_Customization.h"
 #include "XD_CampEditor_ClassHelper.h"
-#include "XD_CampNode.h"
+#include "XD_CampInfo.h"
 #include "AssetToolsModule.h"
 #include "XD_CampGraph_AssetTypeActions.h"
 
@@ -32,21 +32,20 @@ void FXD_CampSystem_EditorModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	
+
+	if (FAssetToolsModule* AssetToolsModule = FModuleManager::GetModulePtr<FAssetToolsModule>("AssetTools"))
+	{
+		IAssetTools& AssetTools = AssetToolsModule->Get();
+		AssetTools.UnregisterAssetTypeActions(XD_CampGraph_AssetTypeActions.ToSharedRef());
+	}
 }
 
 void FXD_CampSystem_EditorModule::StartNodeHelper()
 {
 	if (!NodeHelper.IsValid())
 	{
-		NodeHelper = MakeShareable(new FXD_CampEditor_ClassHelper(UXD_CampNode::StaticClass()));
-		FXD_CampEditor_ClassHelper::AddObservedBlueprintClasses(UXD_CampNode::StaticClass());
-	}
-
-	if (FAssetToolsModule* AssetToolsModule = FModuleManager::LoadModulePtr<FAssetToolsModule>("AssetTools"))
-	{
-		IAssetTools& AssetTools = AssetToolsModule->Get();
-		AssetTools.UnregisterAssetTypeActions(XD_CampGraph_AssetTypeActions.ToSharedRef());
+		NodeHelper = MakeShareable(new FXD_CampEditor_ClassHelper(UXD_CampInfo::StaticClass()));
+		FXD_CampEditor_ClassHelper::AddObservedBlueprintClasses(UXD_CampInfo::StaticClass());
 	}
 }
 

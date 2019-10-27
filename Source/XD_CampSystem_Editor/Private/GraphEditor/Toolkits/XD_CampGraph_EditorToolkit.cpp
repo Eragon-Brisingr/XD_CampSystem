@@ -12,6 +12,7 @@
 #include "PlatformApplicationMisc.h"
 #include "XD_CampGraph_EditorNode.h"
 #include "Editor.h"
+#include "ScopedTransaction.h"
 
 
 #define LOCTEXT_NAMESPACE "XD_CampGraph_EditorToolkit"
@@ -115,7 +116,7 @@ void FXD_CampGraph_EditorToolkit::InitGraphAssetEditor(const EToolkitMode::Type 
 	FGraphEditorCommands::Register();
 	BindToolkitCommands();
 
-	TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout("LayoutName")
+	TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout(TEXT("CampGraphEditorLayout"))
 		->AddArea
 		(
 			FTabManager::NewPrimaryArea()
@@ -258,6 +259,8 @@ bool FXD_CampGraph_EditorToolkit::CanSelectAllNodes()
 
 void FXD_CampGraph_EditorToolkit::OnCommandCut()
 {
+	const FScopedTransaction Transaction(FGenericCommands::Get().Cut->GetDescription());
+
 	OnCommandCopy();
 
 	const FGraphPanelSelectionSet OldSelectedNodes = EdGraphEditor->GetSelectedNodes();
@@ -290,6 +293,8 @@ bool FXD_CampGraph_EditorToolkit::CanCutNodes()
 
 void FXD_CampGraph_EditorToolkit::OnCommandCopy()
 {
+	const FScopedTransaction Transaction(FGenericCommands::Get().Copy->GetDescription());
+
 	FGraphPanelSelectionSet SelectedNodes = GetSelectedNodes();
 	FString ExportedText;
 
@@ -320,6 +325,7 @@ bool FXD_CampGraph_EditorToolkit::CanCopyNodes()
 
 void FXD_CampGraph_EditorToolkit::OnCommandPaste()
 {
+	const FScopedTransaction Transaction(FGenericCommands::Get().Paste->GetDescription());
 
 	const FVector2D PasteLocation = EdGraphEditor->GetPasteLocation();
 
@@ -335,7 +341,7 @@ void FXD_CampGraph_EditorToolkit::OnCommandPaste()
 	for (TSet<UEdGraphNode*>::TIterator It(ImportedNodes); It; ++It)
 	{
 		UXD_CampGraph_EditorNode* Node = Cast<UXD_CampGraph_EditorNode>(*It);
-		GraphAsset->AddNode(Node->AssetNode);
+		GraphAsset->AddCamp(Node->CampInfo);
 	}
 
 	FVector2D AvgNodePosition(0.0f, 0.0f);
@@ -378,7 +384,7 @@ void FXD_CampGraph_EditorToolkit::OnCommandPaste()
 
 bool FXD_CampGraph_EditorToolkit::CanPasteNodes()
 {
-	return true;
+	return false;
 }
 
 void FXD_CampGraph_EditorToolkit::OnCommandDuplicate()
@@ -389,11 +395,12 @@ void FXD_CampGraph_EditorToolkit::OnCommandDuplicate()
 
 bool FXD_CampGraph_EditorToolkit::CanDuplicateNodes()
 {
-	return true;
+	return false;
 }
 
 void FXD_CampGraph_EditorToolkit::OnCommandDelete()
 {
+	const FScopedTransaction Transaction(FGenericCommands::Get().Delete->GetDescription());
 
 	EdGraphEditor->GetCurrentGraph()->Modify();
 
@@ -404,6 +411,7 @@ void FXD_CampGraph_EditorToolkit::OnCommandDelete()
 	{
 		if (UEdGraphNode* Node = Cast<UEdGraphNode>(*It))
 		{
+			Node->GetSchema()->BreakNodeLinks(*Node);
 			Node->Modify();
 			Node->DestroyNode();
 		}

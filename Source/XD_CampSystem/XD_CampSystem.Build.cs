@@ -41,7 +41,6 @@ public class XD_CampSystem : ModuleRules
 
                 "XD_UnrealLibraryEx",
                 "XD_SaveGameSystem",
-                "XD_GenericGraph",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

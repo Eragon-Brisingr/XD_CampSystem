@@ -18,13 +18,13 @@ public:
 	UXD_CampSystemSetting();
 
 	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
-	TSubclassOf<class UXD_CampInfo> CampInfoClass;
+	TSoftClassPtr<class UXD_CampInfo> CampInfoClass;
 	
 	UPROPERTY(EditAnywhere, Category = "阵营设置", Config)
-	TSubclassOf<class UXD_CampRelationship> CampRelationshipClass;
+	TSoftClassPtr<class UXD_CampRelationship> CampRelationshipClass;
 
 	UPROPERTY(EditAnywhere, Category = "阵营设置", Config, meta = (DisplayName = "阵营关系图表"))
-	TSoftObjectPtr<class UXD_CampRelationshipGraph> CampRelationshipGrap;
+	TSoftObjectPtr<class UXD_CampGraph> GlobalCampGraph;
 
 	class UStringTable* GetCampNameStringTable() const;
 };

@@ -13,7 +13,7 @@ FXD_CampGraph_AssetTypeActions::FXD_CampGraph_AssetTypeActions()
 
 FText FXD_CampGraph_AssetTypeActions::GetName() const
 {
-	return NSLOCTEXT("AssetTypeActions", "GraphTypeActions", "XD_CampSystem");
+	return NSLOCTEXT("AssetTypeActions", "GraphTypeActions", "阵营图表");
 }
 
 UClass * FXD_CampGraph_AssetTypeActions::GetSupportedClass() const
@@ -23,12 +23,12 @@ UClass * FXD_CampGraph_AssetTypeActions::GetSupportedClass() const
 
 FColor FXD_CampGraph_AssetTypeActions::GetTypeColor() const
 {
-	return FColor::Red;
+	return FColor::Purple;
 }
 
 uint32 FXD_CampGraph_AssetTypeActions::GetCategories()
 {
-	return EAssetTypeCategories::Misc;
+	return EAssetTypeCategories::Gameplay;
 }
 
 bool FXD_CampGraph_AssetTypeActions::HasActions(const TArray<UObject*>& InObjects) const

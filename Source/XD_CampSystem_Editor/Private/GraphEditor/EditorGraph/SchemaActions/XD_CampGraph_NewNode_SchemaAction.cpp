@@ -6,19 +6,21 @@
 
 #define LOCTEXT_NAMESPACE "XD_CampEditorGraphSchemaAction_NewNode"
 
-UEdGraphNode* FXD_CampGraph_NewNode_SchemaAction::PerformAction(UEdGraph * ParentGraph, UEdGraphPin * FromPin, const FVector2D Location, bool bSelectNewNode)
+UEdGraphNode* FXD_CampGraph_NewNode_SchemaAction::PerformAction(UEdGraph* ParentGraph, UEdGraphPin * FromPin, const FVector2D Location, bool bSelectNewNode)
 {
 	check(ParentGraph);
 
 	ParentGraph->Modify();
 
 
-	UXD_CampGraph* GraphAsset = CastChecked<UXD_CampGraph>(ParentGraph->GetOuter());
-	GraphAsset->Modify();
+	UXD_CampGraph* CampGraph = CastChecked<UXD_CampGraph>(ParentGraph->GetOuter());
+	CampGraph->Modify();
 
-	UXD_CampNode* AssetNode = GraphAsset->SpawnNodeInsideGraph<UXD_CampNode>(NewNodeClass);
-
-    UEdGraphNode* EditorNode=CreateEditorNode(ParentGraph,bSelectNewNode,AssetNode);
+	FGraphNodeCreator<UXD_CampGraph_EditorNode> Creator(*ParentGraph);
+	UXD_CampGraph_EditorNode* EditorNode = Creator.CreateNode(bSelectNewNode);
+	EditorNode->SetCampInfo(NewCampInfo);
+	CampGraph->AddCamp(NewCampInfo);
+	Creator.Finalize();
 
     //EditorNode->AllocateDefaultPins();   for some reason it was called 2 times even if I only call it here
     EditorNode->AutowireNewNode(FromPin);
@@ -26,13 +28,5 @@ UEdGraphNode* FXD_CampGraph_NewNode_SchemaAction::PerformAction(UEdGraph * Paren
     EditorNode->NodePosY = Location.Y;
 
 	return EditorNode;
-}
-UEdGraphNode * FXD_CampGraph_NewNode_SchemaAction::CreateEditorNode(UEdGraph * ParentGraph, bool bSelectNewNode, UXD_CampNode* AssetNode)
-{
-    FGraphNodeCreator<UXD_CampGraph_EditorNode>Creator(*ParentGraph);
-    UXD_CampGraph_EditorNode* EdNode = Creator.CreateNode(bSelectNewNode);
-    EdNode->SetAssetNode(AssetNode);
-    Creator.Finalize();
-    return EdNode;
 }
 #undef LOCTEXT_NAMESPACE

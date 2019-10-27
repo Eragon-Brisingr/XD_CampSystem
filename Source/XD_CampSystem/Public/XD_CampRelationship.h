@@ -7,6 +7,8 @@
 #include "XD_CampSystemType.h"
 #include "XD_CampRelationship.generated.h"
 
+class UXD_CampInfo;
+
 /**
  * 
  */
@@ -22,9 +24,11 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const override;
 
 public:
-	UPROPERTY(SaveGame, BlueprintReadOnly, Replicated, Category = "阵营关系", meta = (DisplayName = "与阵营"))
-	class UXD_CampInfo* ToCamp;
+	UPROPERTY(SaveGame, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "与阵营"))
+	UXD_CampInfo* ToCamp;
 
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营关系", meta = (DisplayName = "阵营友好值", UIMin = "-150", UIMax = "150"))
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "关系值", UIMin = "-150", UIMax = "150"))
 	float RelationshipValue;
+
+	UXD_CampInfo* GetOwningCamp() const;
 };

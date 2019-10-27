@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "XD_CampSystemType.generated.h"
 
+class UXD_CampInfo;
 /**
  * 
  */
@@ -23,9 +24,9 @@ USTRUCT(BlueprintType, meta = (HasNativeMake = "XD_CampSystemFunctionLibrary.Mak
 struct XD_CAMPSYSTEM_API FXD_CampConfig
 {
 	GENERATED_BODY()
-
 public:
 	FXD_CampConfig();
+	FXD_CampConfig(const UXD_CampInfo* InCampInfo);
 	FXD_CampConfig(const UObject* WorldContextObject, const FText& CampName);
 
 	UPROPERTY(EditAnywhere, Category = "阵营", SaveGame, NotReplicated)
@@ -36,10 +37,10 @@ public:
 	FGuid CampGuid;
 private:
 	UPROPERTY(VisibleAnywhere, Instanced, Category = "阵营")
-	mutable class UXD_CampInfo* CampInfo;
+	mutable UXD_CampInfo* CampInfo;
 
 public:
-	class UXD_CampInfo* GetCamp(const UObject* WorldContextObject) const;
+	UXD_CampInfo* GetCamp(const UObject* WorldContextObject) const;
 
 	bool SetCamp(const UObject* WorldContextObject, const FText& CampName);
 

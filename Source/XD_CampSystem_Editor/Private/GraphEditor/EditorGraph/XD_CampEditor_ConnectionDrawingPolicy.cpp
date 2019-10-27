@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "XD_CampEditor_ConnectionDrawingPolicy.h"
 #include "DrawElements.h"
+#include "XD_CampGraph_EditorNode.h"
 
 FXD_CampEditor_ConnectionDrawingPolicy::FXD_CampEditor_ConnectionDrawingPolicy(int32 InBackLayerID, int32 InFrontLayerID, float ZoomFactor, const FSlateRect& InClippingRect, FSlateWindowElementList& InDrawElements, UEdGraph* InGraphObj)
 	: FConnectionDrawingPolicy(InBackLayerID, InFrontLayerID, ZoomFactor, InClippingRect, InDrawElements)
@@ -13,6 +14,14 @@ void FXD_CampEditor_ConnectionDrawingPolicy::DetermineWiringStyle(UEdGraphPin* O
 	Params.AssociatedPin1 = OutputPin;
 	Params.AssociatedPin2 = InputPin;
 	Params.WireThickness = 1.5f;
+
+	if (InputPin)
+	{
+		if (UXD_CampGraph_EditorEdge* EdCampEdge = Cast<UXD_CampGraph_EditorEdge>(InputPin->GetOwningNode()))
+		{
+			Params.WireColor = EdCampEdge->GetConnectionColor();
+		}
+	}
 
 	const bool bDeemphasizeUnhoveredPins = HoveredPins.Num() > 0;
 	if (bDeemphasizeUnhoveredPins)
@@ -53,11 +62,12 @@ void FXD_CampEditor_ConnectionDrawingPolicy::DrawPreviewConnector(const FGeometr
 
 void FXD_CampEditor_ConnectionDrawingPolicy::DrawSplineWithArrow(const FVector2D& StartAnchorPoint, const FVector2D& EndAnchorPoint, const FConnectionParams& Params)
 {
-	// bUserFlag1 indicates that we need to reverse the direction of connection (used by debugger)
-	const FVector2D& P0 = Params.bUserFlag1 ? EndAnchorPoint : StartAnchorPoint;
-	const FVector2D& P1 = Params.bUserFlag1 ? StartAnchorPoint : EndAnchorPoint;
+	Internal_DrawLineWithArrow(StartAnchorPoint, EndAnchorPoint, Params);
 
-	Internal_DrawLineWithArrow(P0, P1, Params);
+	if (Params.bUserFlag1)
+	{
+		Internal_DrawLineWithArrow(EndAnchorPoint, StartAnchorPoint, Params);
+	}
 }
 
 void FXD_CampEditor_ConnectionDrawingPolicy::Internal_DrawLineWithArrow(const FVector2D& StartAnchorPoint, const FVector2D& EndAnchorPoint, const FConnectionParams& Params)
@@ -115,4 +125,33 @@ FVector2D FXD_CampEditor_ConnectionDrawingPolicy::ComputeSplineTangent(const FVe
 	const FVector2D NormDelta = Delta.GetSafeNormal();
 
 	return NormDelta;
+}
+
+void FXD_CampEditor_ConnectionDrawingPolicy::DetermineLinkGeometry(FArrangedChildren& ArrangedNodes, TSharedRef<SWidget>& OutputPinWidget, UEdGraphPin* OutputPin, UEdGraphPin* InputPin, FArrangedWidget*& StartWidgetGeometry, FArrangedWidget*& EndWidgetGeometry)
+{
+	if (UXD_CampGraph_EditorEdge* EdgeNode = Cast<UXD_CampGraph_EditorEdge>(InputPin->GetOwningNode()))
+	{
+		UXD_CampGraph_EditorNode* Start = EdgeNode->GetOwingCampNode();
+		UXD_CampGraph_EditorNode* End = EdgeNode->GetToCampNode();
+		if (Start != nullptr && End != nullptr)
+		{
+			int32* StartNodeIndex = NodeWidgetMap.Find(Start);
+			int32* EndNodeIndex = NodeWidgetMap.Find(End);
+			if (StartNodeIndex != nullptr && EndNodeIndex != nullptr)
+			{
+				StartWidgetGeometry = &(ArrangedNodes[*StartNodeIndex]);
+				EndWidgetGeometry = &(ArrangedNodes[*EndNodeIndex]);
+			}
+		}
+	}
+	else
+	{
+		StartWidgetGeometry = PinGeometries->Find(OutputPinWidget);
+
+		if (TSharedPtr<SGraphPin>* pTargetWidget = PinToPinWidgetMap.Find(InputPin))
+		{
+			TSharedPtr<SGraphPin> InputWidget = *pTargetWidget;
+			EndWidgetGeometry = PinGeometries->Find(InputWidget.ToSharedRef());
+		}
+	}
 }
