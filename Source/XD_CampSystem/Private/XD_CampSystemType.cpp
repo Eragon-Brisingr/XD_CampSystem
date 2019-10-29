@@ -30,6 +30,10 @@ class UXD_CampInfo* FXD_CampConfig::GetCamp(const UObject* WorldContextObject) c
 		if (UXD_CampManager* CampManager = UXD_CampManager::GetCampManager(WorldContextObject))
 		{
 			CampInfo = CampManager->FindCampByGuid(CampGuid);
+			if (CampInfo == nullptr)
+			{
+				CampInfo = CampManager->FindCampByName(CampName);
+			}
 		}
 	}
 	return CampInfo;
