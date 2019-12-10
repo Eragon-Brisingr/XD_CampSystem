@@ -44,6 +44,7 @@ public class XD_CampSystem_Editor : ModuleRules
                 "AssetTools",
                 "GraphEditor",
                 "ApplicationCore",
+                "ToolMenus",
 
                 "XD_CampSystem",
                 "XD_SaveGameSystem",

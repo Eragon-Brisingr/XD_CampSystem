@@ -108,11 +108,6 @@ void UXD_CampEditor_GraphSchema::GetGraphContextActions(FGraphContextMenuBuilder
 	}
 }
 
-void UXD_CampEditor_GraphSchema::GetContextMenuActions(const UEdGraph* CurrentGraph, const UEdGraphNode* InGraphNode, const UEdGraphPin* InGraphPin, FMenuBuilder* MenuBuilder, bool bIsDebugging) const
-{
-	Super::GetContextMenuActions(CurrentGraph, InGraphNode, InGraphPin, MenuBuilder, bIsDebugging);
-}
-
 const FPinConnectionResponse UXD_CampEditor_GraphSchema::CanCreateConnection(const UEdGraphPin * A, const UEdGraphPin * B) const
 {
 	if(!(A && B))

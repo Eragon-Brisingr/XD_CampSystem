@@ -19,7 +19,7 @@ UXD_CampManager::UXD_CampManager()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UXD_CampManager::BeginPlay()

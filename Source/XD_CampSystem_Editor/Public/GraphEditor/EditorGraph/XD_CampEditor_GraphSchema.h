@@ -21,8 +21,6 @@ class UXD_CampEditor_GraphSchema : public UEdGraphSchema
 public:
 	void GetGraphContextActions(FGraphContextMenuBuilder& ContextMenuBuilder) const override;
 
-	void GetContextMenuActions(const UEdGraph* CurrentGraph, const UEdGraphNode* InGraphNode, const UEdGraphPin* InGraphPin, class FMenuBuilder* MenuBuilder, bool bIsDebugging) const override;
-
 	const FPinConnectionResponse CanCreateConnection(const UEdGraphPin* A, const UEdGraphPin* B) const override;
 	bool CreateAutomaticConversionNodeAndConnections(UEdGraphPin* A, UEdGraphPin* B) const override;
 

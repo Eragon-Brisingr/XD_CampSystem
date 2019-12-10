@@ -13,6 +13,8 @@
 #include "SXD_CampGraphEdge.h"
 #include "XD_CampRelationship.h"
 #include "XD_CampSystemSetting.h"
+#include "ToolMenu.h"
+#include "ToolMenuSection.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampGraph_EditorNode"
 
@@ -109,19 +111,17 @@ void UXD_CampGraph_EditorNode::AutowireNewNode(UEdGraphPin* FromPin)
 	}
 }
 
-void UXD_CampGraph_EditorNode::GetContextMenuActions(const FGraphNodeContextMenuBuilder& Context) const
+void UXD_CampGraph_EditorNode::GetNodeContextMenuActions(class UToolMenu* Menu, class UGraphNodeContextMenuContext* Context) const
 {
-	FMenuBuilder* MenuBuilder = Context.MenuBuilder;
-	MenuBuilder->BeginSection(NAME_None, LOCTEXT("NodeActionsMenuHeader", "节点操作"));
+	FToolMenuSection& Section = Menu->AddSection(TEXT("CampGraph_NodeContext"), LOCTEXT("NodeActionsMenuHeader", "节点操作"));
 	{
-		MenuBuilder->AddMenuEntry(FGenericCommands::Get().Delete);
-		MenuBuilder->AddMenuEntry(FGenericCommands::Get().Cut);
-		MenuBuilder->AddMenuEntry(FGenericCommands::Get().Copy);
-		MenuBuilder->AddMenuEntry(FGenericCommands::Get().Duplicate);
+		Section.AddMenuEntry(FGenericCommands::Get().Delete);
+		Section.AddMenuEntry(FGenericCommands::Get().Cut);
+		Section.AddMenuEntry(FGenericCommands::Get().Copy);
+		Section.AddMenuEntry(FGenericCommands::Get().Duplicate);
 
-		MenuBuilder->AddMenuEntry(FGraphEditorCommands::Get().BreakNodeLinks);
+		Section.AddMenuEntry(FGraphEditorCommands::Get().BreakNodeLinks);
 	}
-	MenuBuilder->EndSection();
 }
 
 void UXD_CampGraph_EditorNode::SetCampInfo(UXD_CampInfo* InCampInfo)

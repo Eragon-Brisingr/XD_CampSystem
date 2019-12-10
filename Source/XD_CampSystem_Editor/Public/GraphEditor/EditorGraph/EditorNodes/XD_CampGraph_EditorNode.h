@@ -27,7 +27,7 @@ public:
 	void PrepareForCopying() override;
 	void DestroyNode() override;
 	void AutowireNewNode(UEdGraphPin* FromPin) override;
-	void GetContextMenuActions(const FGraphNodeContextMenuBuilder& Context) const override;
+	void GetNodeContextMenuActions(class UToolMenu* Menu, class UGraphNodeContextMenuContext* Context) const override;
 public:
 	void SetCampInfo(UXD_CampInfo* InCampInfo);
 	UXD_CampInfo* GetAssetNode();
