@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "XD_CampManager.h"
-#include <UnrealNetwork.h>
+#include <Net/UnrealNetwork.h>
 #include <Engine/ActorChannel.h>
 #include <GameFramework/GameStateBase.h>
 #include "XD_CampInfo.h"

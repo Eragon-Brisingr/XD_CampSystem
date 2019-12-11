@@ -2,7 +2,6 @@
 #include "XD_CampGraph.h"
 #include "XD_CampInfo.h"
 #include "XD_CampSystemSetting.h"
-#include "StringTable.h"
 #define LOCTEXT_NAMESPACE "XD_CampGraph"
 
 UXD_CampGraph::UXD_CampGraph()

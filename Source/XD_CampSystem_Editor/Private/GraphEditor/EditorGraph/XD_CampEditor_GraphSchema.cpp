@@ -1,21 +1,22 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampEditor_GraphSchema.h"
-#include "SubclassOf.h"
-#include "XD_CampSystemEditor_Log.h"
-#include "XD_CampEditor_ConnectionDrawingPolicy.h"
-#include "UObjectIterator.h"
-#include "XD_CampGraph_NewNode_SchemaAction.h"
-#include "EdGraph/EdGraph.h"
-#include "XD_CampGraph.h"
-#include "XD_CampGraph_EditorNode.h"
-#include "XD_CampEditor_ClassHelper.h"
-#include "ModuleManager.h"
-#include "XD_CampSystem_Editor.h"
-#include "ScopedTransaction.h"
-#include "StringTable.h"
-#include "StringTableCore.h"
-#include "XD_CampSystemSetting.h"
+#include "GraphEditor/EditorGraph/XD_CampEditor_GraphSchema.h"
+#include <Templates/SubclassOf.h>
+#include <UObject/UObjectIterator.h>
+#include <EdGraph/EdGraph.h>
+#include <Modules/ModuleManager.h>
+#include <ScopedTransaction.h>
+#include <Internationalization/StringTable.h>
+#include <Internationalization/StringTableCore.h>
+
 #include "XD_CampInfo.h"
+#include "XD_CampGraph.h"
+#include "XD_CampSystemSetting.h"
+#include "XD_CampSystem_Editor.h"
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
+#include "GraphEditor/EditorGraph/XD_CampEditor_ConnectionDrawingPolicy.h"
+#include "GraphEditor/EditorGraph/SchemaActions/XD_CampGraph_NewNode_SchemaAction.h"
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
+#include "GraphEditor/Utility/XD_CampEditor_ClassHelper.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampEditor_GraphSchema"
 

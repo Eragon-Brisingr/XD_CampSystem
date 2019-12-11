@@ -4,10 +4,10 @@
 #include <PropertyEditorModule.h>
 #include "XD_PropertyCustomizationEx.h"
 #include "XD_CampConfig_Customization.h"
-#include "XD_CampEditor_ClassHelper.h"
+#include "GraphEditor/Utility/XD_CampEditor_ClassHelper.h"
 #include "XD_CampInfo.h"
-#include "AssetToolsModule.h"
-#include "XD_CampGraph_AssetTypeActions.h"
+#include <AssetToolsModule.h>
+#include "GraphEditor/AssetTypeActions/XD_CampGraph_AssetTypeActions.h"
 
 #define LOCTEXT_NAMESPACE "FXD_CampSystemModule_Editor"
 

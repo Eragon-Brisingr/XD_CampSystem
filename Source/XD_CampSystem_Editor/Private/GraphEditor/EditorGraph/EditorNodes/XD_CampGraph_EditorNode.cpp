@@ -1,20 +1,21 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampGraph_EditorNode.h"
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
+#include <IDetailsView.h>
+#include <PropertyEditorModule.h>
+#include <Modules/ModuleManager.h>
+#include <GraphEditorActions.h>
+#include <Framework/Commands/GenericCommands.h>
+#include <ToolMenu.h>
+#include <ToolMenuSection.h>
+
 #include "XD_CampInfo.h"
 #include "XD_CampGraph.h"
-#include "XD_CampEditorGraph.h"
-#include "SXD_CampEditorNode.h"
-#include "IDetailsView.h"
-#include "PropertyEditorModule.h"
-#include "ModuleManager.h"
-#include "XD_CampSystemEditor_Log.h"
-#include "GenericCommands.h"
-#include "GraphEditorActions.h"
-#include "SXD_CampGraphEdge.h"
 #include "XD_CampRelationship.h"
 #include "XD_CampSystemSetting.h"
-#include "ToolMenu.h"
-#include "ToolMenuSection.h"
+#include "GraphEditor/EditorGraph/XD_CampEditorGraph.h"
+#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampEditorNode.h"
+#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampGraphEdge.h"
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampGraph_EditorNode"
 

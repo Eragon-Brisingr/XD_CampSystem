@@ -4,9 +4,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EdGraph/EdGraphNode.h"
+#include <EdGraph/EdGraphNode.h>
 #include "XD_CampInfo.h"
-#include "SubclassOf.h"
+#include <Templates/SubclassOf.h>
 #include "XD_CampGraph_EditorNode.generated.h"
 
 class UXD_CampRelationship;

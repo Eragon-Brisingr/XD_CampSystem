@@ -1,5 +1,5 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampGraph_AssetFactory.h"
+#include "GraphEditor/Factories/XD_CampGraph_AssetFactory.h"
 #include "XD_CampGraph.h"
 
 UXD_CampGraph_AssetFactory::UXD_CampGraph_AssetFactory()

@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampEditorGraph.h"
+#include "GraphEditor/EditorGraph/XD_CampEditorGraph.h"
 #include "XD_CampInfo.h"
-#include "XD_CampGraph_EditorNode.h"
-#include "XD_CampSystemEditor_Log.h"
-#include "EdGraph/EdGraphPin.h"
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
+#include <EdGraph/EdGraphPin.h>
 #include "XD_CampGraph.h"
 
 bool UXD_CampEditorGraph::IsNameUnique(const FText & InName)

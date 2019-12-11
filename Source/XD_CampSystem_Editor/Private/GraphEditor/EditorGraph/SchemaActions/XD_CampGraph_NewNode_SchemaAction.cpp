@@ -1,8 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampGraph_NewNode_SchemaAction.h"
+#include "GraphEditor/EditorGraph/SchemaActions/XD_CampGraph_NewNode_SchemaAction.h"
+#include <EdGraph/EdGraph.h>
+
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
 #include "XD_CampGraph.h"
-#include "XD_CampGraph_EditorNode.h"
-#include "EdGraph/EdGraph.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampEditorGraphSchemaAction_NewNode"
 

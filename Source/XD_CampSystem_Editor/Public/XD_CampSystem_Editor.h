@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Modules/ModuleManager.h"
+#include <Modules/ModuleManager.h>
 
 struct FXD_CampEditor_ClassHelper;
 class FXD_CampGraph_AssetTypeActions;

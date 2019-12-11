@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "SXD_CampEditorPin.h"
-#include "XD_CampGraph_EditorStyle.h"
+#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampEditorPin.h"
+#include "GraphEditor/Utility/XD_CampGraph_EditorStyle.h"
 
 
 void SXD_CampEditorPin::Construct(const FArguments& InArgs, UEdGraphPin* InPin)

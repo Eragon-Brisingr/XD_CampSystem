@@ -1,11 +1,11 @@
-﻿#include "SXD_CampGraphEdge.h"
+﻿#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampGraphEdge.h"
 #include "Widgets/SBoxPanel.h"
 #include "Widgets/Images/SImage.h"
 #include "Widgets/SToolTip.h"
-#include "SGraphPanel.h"
-#include "EdGraphSchema_K2.h"
+#include <SGraphPanel.h>
+#include <EdGraphSchema_K2.h>
 #include <SCommentBubble.h>
-#include "XD_CampGraph_EditorNode.h"
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
 #include "ConnectionDrawingPolicy.h"
 
 #define LOCTEXT_NAMESPACE "SGenericGraphEdge"

@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampEditor_ClassHelper.h"
-#include "Class.h"
-#include "FeedbackContext.h"
-#include "Package.h"
-#include "Engine/Blueprint.h"
-#include "AssetRegistryModule.h"
-#include "HotReloadInterface.h"
-#include "Editor.h"
-#include "ConstructorHelpers.h"
-#include "XD_CampSystemEditor_Log.h"
+#include "GraphEditor/Utility/XD_CampEditor_ClassHelper.h"
+#include <UObject/Class.h>
+#include <Misc/FeedbackContext.h>
+#include <UObject/Package.h>
+#include <Engine/Blueprint.h>
+#include <AssetRegistryModule.h>
+#include <Misc/HotReloadInterface.h>
+#include <Editor.h>
+#include <UObject/ConstructorHelpers.h>
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampEditor_ClassHelper"
 

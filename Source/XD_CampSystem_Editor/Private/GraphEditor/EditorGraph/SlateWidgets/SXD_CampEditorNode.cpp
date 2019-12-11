@@ -1,12 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "SXD_CampEditorNode.h"
-#include "Slate.h"
-#include "XD_CampGraph_EditorNode.h"
-#include "SGraphPin.h"
-#include "SXD_CampEditorPin.h"
-#include "XD_CampSystemEditor_Log.h"
-#include "SCommentBubble.h"
-#include "GraphEditorSettings.h"
+#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampEditorNode.h"
+#include <Slate.h>
+#include <SGraphPin.h>
+#include <SCommentBubble.h>
+#include <GraphEditorSettings.h>
+
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
+#include "GraphEditor/EditorGraph/SlateWidgets/SXD_CampEditorPin.h"
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
 
 #define LOCTEXT_NAMESPACE "SXD_CampGraphNode"
 

@@ -5,7 +5,7 @@
 #include "XD_CampSystemUtility.h"
 #include "XD_CampInfo.h"
 #include "XD_CampSystemSetting.h"
-#include <StringTable.h>
+#include <Internationalization/StringTable.h>
 
 FXD_CampConfig::FXD_CampConfig()
 {

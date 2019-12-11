@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "EdGraph/EdGraphSchema.h"
-#include "SubclassOf.h"
+#include <Templates/SubclassOf.h>
 #include "XD_CampInfo.h"
 #include "XD_CampGraph_NewNode_SchemaAction.generated.h"
 

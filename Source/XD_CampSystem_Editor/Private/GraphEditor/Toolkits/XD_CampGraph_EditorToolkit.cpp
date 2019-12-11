@@ -1,18 +1,18 @@
 ﻿// Copyright (c) 2018 Jhonny Hueller
-#include "XD_CampGraph_EditorToolkit.h"
-#include "XD_CampSystemEditor_Log.h"
-#include "PropertyEditorModule.h"
-#include "ModuleManager.h"
-#include "Slate.h"
-#include "BlueprintEditorUtils.h"
-#include "GraphEditorActions.h"
-#include "XD_CampEditorGraph.h"
-#include "XD_CampEditor_GraphSchema.h"
-#include "EdGraphUtilities.h"
-#include "PlatformApplicationMisc.h"
-#include "XD_CampGraph_EditorNode.h"
-#include "Editor.h"
-#include "ScopedTransaction.h"
+#include "GraphEditor/Toolkits/XD_CampGraph_EditorToolkit.h"
+#include "GraphEditor/Utility/XD_CampSystemEditor_Log.h"
+#include <PropertyEditorModule.h>
+#include <Modules/ModuleManager.h>
+#include <Slate.h>
+#include <Kismet2/BlueprintEditorUtils.h>
+#include <GraphEditorActions.h>
+#include "GraphEditor/EditorGraph/XD_CampEditorGraph.h"
+#include "GraphEditor/EditorGraph/XD_CampEditor_GraphSchema.h"
+#include <EdGraphUtilities.h>
+#include <HAL/PlatformApplicationMisc.h>
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
+#include <Editor.h>
+#include <ScopedTransaction.h>
 
 
 #define LOCTEXT_NAMESPACE "XD_CampGraph_EditorToolkit"

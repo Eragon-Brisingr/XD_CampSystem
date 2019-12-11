@@ -2,12 +2,12 @@
 
 #include "XD_CampConfig_Customization.h"
 #include "XD_CampSystemType.h"
-#include <StringTable.h>
+#include <Internationalization/StringTable.h>
 #include "XD_CampSystemSetting.h"
 #include <DetailWidgetRow.h>
 #include "XD_CampSystem_EditorUtility.h"
-#include <STextComboBox.h>
-#include <StringTableCore.h>
+#include <Widgets/Input/STextComboBox.h>
+#include <Internationalization/StringTableCore.h>
 #include "XD_CampGraph.h"
 #include "XD_CampInfo.h"
 

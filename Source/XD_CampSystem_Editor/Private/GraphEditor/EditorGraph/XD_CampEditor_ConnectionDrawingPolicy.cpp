@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "XD_CampEditor_ConnectionDrawingPolicy.h"
-#include "DrawElements.h"
-#include "XD_CampGraph_EditorNode.h"
+#include "GraphEditor/EditorGraph/XD_CampEditor_ConnectionDrawingPolicy.h"
+#include <Rendering/DrawElements.h>
+#include "GraphEditor/EditorGraph/EditorNodes/XD_CampGraph_EditorNode.h"
 
 FXD_CampEditor_ConnectionDrawingPolicy::FXD_CampEditor_ConnectionDrawingPolicy(int32 InBackLayerID, int32 InFrontLayerID, float ZoomFactor, const FSlateRect& InClippingRect, FSlateWindowElementList& InDrawElements, UEdGraph* InGraphObj)
 	: FConnectionDrawingPolicy(InBackLayerID, InFrontLayerID, ZoomFactor, InClippingRect, InDrawElements)

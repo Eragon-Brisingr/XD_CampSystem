@@ -5,8 +5,8 @@
 #include "Widgets/DeclarativeSyntaxSupport.h"
 #include "Widgets/SWidget.h"
 #include "SNodePanel.h"
-#include "SGraphNode.h"
-#include "NotifyHook.h"
+#include <SGraphNode.h>
+#include <Misc/NotifyHook.h>
 
 class SToolTip;
 class UXD_CampGraph_EditorEdge;

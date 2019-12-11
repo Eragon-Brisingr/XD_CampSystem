@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include <UObject/NoExportTypes.h>
 #include "XD_CampSystemType.generated.h"
 
 class UXD_CampInfo;

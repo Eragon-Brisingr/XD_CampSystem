@@ -2,8 +2,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "SubclassOf.h"
+#include <UObject/NoExportTypes.h>
+#include <Templates/SubclassOf.h>
 #include "XD_CampGraph.generated.h"
 
 #define LOCTEXT_NAMESPACE "XD_CampGraph"

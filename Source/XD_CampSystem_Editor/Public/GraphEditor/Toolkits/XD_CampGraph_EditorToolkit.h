@@ -2,10 +2,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AssetEditorToolkit.h"
-#include "NotifyHook.h"
-#include "GraphEditor.h"
-#include "IDetailsView.h"
+#include <Toolkits/AssetEditorToolkit.h>
+#include <Misc/NotifyHook.h>
+#include <GraphEditor.h>
+#include <IDetailsView.h>
 #include "XD_CampGraph.h"
 
 /**
