@@ -162,7 +162,6 @@ class UXD_CampInfo* UXD_CampManager::FindCampByName(const FText& CampName) const
 	}
 	else
 	{
-		CampSystem_Error_Log("无法找到%s，该阵营名不存在", *CampName.ToString());
 		return nullptr;
 	}
 }
@@ -176,7 +175,6 @@ class UXD_CampInfo* UXD_CampManager::FindCampByGuid(const FGuid& Guid) const
 	}
 	else
 	{
-		CampSystem_Error_Log("无法找到%s，该阵营GUID不存在", *Guid.ToString());
 		return nullptr;
 	}
 }

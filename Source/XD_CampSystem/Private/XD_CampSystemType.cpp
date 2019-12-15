@@ -34,6 +34,7 @@ class UXD_CampInfo* FXD_CampConfig::GetCamp(const UObject* WorldContextObject) c
 			{
 				CampInfo = CampManager->FindCampByName(CampName);
 			}
+			ensure(CampInfo);
 		}
 	}
 	return CampInfo;
