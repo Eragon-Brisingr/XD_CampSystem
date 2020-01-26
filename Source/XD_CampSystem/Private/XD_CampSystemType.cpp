@@ -13,7 +13,11 @@ FXD_CampConfig::FXD_CampConfig()
 }
 
 FXD_CampConfig::FXD_CampConfig(const UXD_CampInfo* InCampInfo)
-	: CampName(InCampInfo->CampName), CampGuid(InCampInfo->CampGuid)
+	:
+	CampGuid(InCampInfo->CampGuid)
+#if WITH_EDITORONLY_DATA
+	, CampName(InCampInfo->CampName)
+#endif
 {
 
 }
@@ -30,10 +34,6 @@ class UXD_CampInfo* FXD_CampConfig::GetCamp(const UObject* WorldContextObject) c
 		if (UXD_CampManager* CampManager = UXD_CampManager::GetCampManager(WorldContextObject))
 		{
 			CampInfo = CampManager->FindCampByGuid(CampGuid);
-			if (CampInfo == nullptr)
-			{
-				CampInfo = CampManager->FindCampByName(CampName);
-			}
 			ensure(CampInfo);
 		}
 	}
@@ -57,7 +57,9 @@ bool FXD_CampConfig::SetCamp(class UXD_CampInfo* InCampInfo)
 	if (InCampInfo)
 	{
 		CampInfo = InCampInfo;
+#if WITH_EDITORONLY_DATA
 		CampName = InCampInfo->CampName;
+#endif
 		CampGuid = InCampInfo->CampGuid;
 		return true;
 	}
