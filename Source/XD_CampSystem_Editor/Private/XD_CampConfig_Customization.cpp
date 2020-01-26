@@ -14,16 +14,31 @@
 void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr<IPropertyHandle> CampName_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampName));
+	TSharedPtr<IPropertyHandle> CampGuid_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampGuid));
 
-	if (!GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.IsNull())
+	bool HasValidCampName = false;
+	UXD_CampGraph* CampGraph = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous();
+	if (CampGraph)
 	{
-		CampNameList = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous()->GetAllCampNames();
+		CampNameList = CampGraph->GetAllCampNames();
+
+		if (const FGuid* CampHandle = FPropertyCustomizeHelper::Value<FGuid>(CampGuid_PropertyHandle))
+		{
+			int32 Index = CampGraph->CampList.IndexOfByPredicate([&](const UXD_CampInfo* E) {return E->CampGuid == *CampHandle; });
+			if (Index != INDEX_NONE)
+			{
+				InitSelectedText = CampNameList[Index];
+				HasValidCampName = true;
+			}
+		}
 	}
 
-	if (FText* CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle))
+	if (HasValidCampName == false)
 	{
-		int32 Index = CampNameList.IndexOfByPredicate([&](TSharedPtr<FString> e) {return *e.Get() == CampName->ToString(); });
-		InitSelectedText = Index != INDEX_NONE ? CampNameList[Index] : MakeShareable(new FString(FString::Printf(TEXT("[%s]_无效的阵营名"), *CampName->ToString())));
+		if (const FText* CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle))
+		{
+			InitSelectedText = MakeShareable(new FString(FString::Printf(TEXT("[%s]_无效的阵营名"), *CampName->ToString())));
+		}
 	}
 
 	HeaderRow.NameContent()
@@ -44,7 +59,7 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 						if (UXD_CampInfo* CampInfo = *P_CampInfo)
 						{
 							CampName_PropertyHandle->SetValue(CampInfo->CampName);
-							FPropertyCustomizeHelper::SetValue(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampGuid)), CampInfo->CampGuid);
+							FPropertyCustomizeHelper::SetValue(CampGuid_PropertyHandle, CampInfo->CampGuid);
 						}
 					}
 				}
