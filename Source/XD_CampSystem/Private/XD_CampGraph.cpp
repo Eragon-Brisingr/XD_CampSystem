@@ -2,7 +2,8 @@
 #include "XD_CampGraph.h"
 #include "XD_CampInfo.h"
 #include "XD_CampSystemSetting.h"
-#define LOCTEXT_NAMESPACE "XD_CampGraph"
+
+#define LOCTEXT_NAMESPACE "阵营"
 
 UXD_CampGraph::UXD_CampGraph()
 {
@@ -22,7 +23,6 @@ UXD_CampInfo* UXD_CampGraph::CreateCampInfoInsideGraph()
 
 void UXD_CampGraph::AddCamp(UXD_CampInfo* InNode)
 {
-	InNode->SetGraph(this);
 	CampList.Add(InNode);
 }
 

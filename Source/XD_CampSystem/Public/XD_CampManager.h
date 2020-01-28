@@ -24,17 +24,16 @@ public:
 
 protected:
 	// Called when the game starts
-	virtual void BeginPlay() override;
-
+	void BeginPlay() override;
+	void PostInitProperties() override;
 public:
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const override;
+	bool ReplicateSubobjects(class UActorChannel *Channel, class FOutBunch *Bunch, FReplicationFlags *RepFlags) override;
 
-	virtual void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty > & OutLifetimeProps) const override;
-
-	virtual bool ReplicateSubobjects(class UActorChannel *Channel, class FOutBunch *Bunch, FReplicationFlags *RepFlags) override;
-
-	virtual void WhenGameInit_Implementation() override;
+protected:
+	void WhenGameInit_Implementation() override;
 	//阵营
 public:
 	static UXD_CampManager* GetCampManager(const UObject* WorldContextObject);
@@ -72,4 +71,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营")
 	EXD_CampRelationship GetCampRelationship(UXD_CampInfo* Camp, UXD_CampInfo* WithCamp) const;
+
+public:
+	// 用以处理无阵营时的容错
+	UXD_CampInfo* GetDefaultCampInfo() const { return CampList[0]; };
 };

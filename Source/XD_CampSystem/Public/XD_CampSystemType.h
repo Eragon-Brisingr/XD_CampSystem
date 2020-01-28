@@ -29,6 +29,11 @@ public:
 	FXD_CampConfig(const UXD_CampInfo* InCampInfo);
 	FXD_CampConfig(const UObject* WorldContextObject, const FText& CampName);
 	
+private:
+	UPROPERTY(VisibleAnywhere, Category = "阵营")
+	mutable UXD_CampInfo* CampInfo;
+
+public:
 	// 考虑阵营更名情况，使用Guid作为阵营唯一信息
 	UPROPERTY(VisibleAnywhere, Category = "阵营", SaveGame, NotReplicated)
 	FGuid CampGuid;
@@ -37,14 +42,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "阵营", NotReplicated)
 	FText CampName;
 #endif
-private:
-	UPROPERTY(VisibleAnywhere, Category = "阵营")
-	mutable UXD_CampInfo* CampInfo;
-
 public:
 	UXD_CampInfo* GetCamp(const UObject* WorldContextObject) const;
 
+	void InitCampInfo(const UObject* WorldContextObject) const;
 	bool SetCamp(const UObject* WorldContextObject, const FText& CampName);
-
 	bool SetCamp(class UXD_CampInfo* CampInfo);
 };

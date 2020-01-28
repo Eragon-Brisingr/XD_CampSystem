@@ -22,13 +22,12 @@ class XD_CAMPSYSTEM_API UXD_CampGraph : public UObject
 
 public:
 	UXD_CampGraph();
-
-	UPROPERTY(VisibleAnywhere)
+	
+	UPROPERTY(EditAnywhere, Category = "阵营配置", meta = (DisplayName = "当前阵营"), AdvancedDisplay = true, Instanced)
 	TArray<UXD_CampInfo*> CampList;
 	
 	UPROPERTY(EditAnywhere, Category = "阵营配置", meta = (DisplayName = "阵营名表"))
 	UStringTable* CampNameStringTable;
-
 #if WITH_EDITORONLY_DATA
 public:
 	UPROPERTY()

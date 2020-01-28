@@ -12,6 +12,8 @@
 #include "XD_CampRelationship.h"
 #include "XD_CampGraph.h"
 
+#define LOCTEXT_NAMESPACE "阵营"
+
 UXD_CampManager::UXD_CampManager()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
@@ -27,6 +29,11 @@ void UXD_CampManager::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+}
+
+void UXD_CampManager::PostInitProperties()
+{
+	Super::PostInitProperties();
 }
 
 void UXD_CampManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -64,12 +71,12 @@ void UXD_CampManager::WhenGameInit_Implementation()
 	UXD_CampGraph* CampGraph = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous();
 	if (CampGraph)
 	{
-		//复制阵营指向并重置Outer
+		// 复制阵营指向并重置Outer
 		for (UXD_CampInfo* CampInfo : CampGraph->CampList)
 		{
 			CampList.Add(UXD_ObjectFunctionLibrary::DuplicateObject(CampInfo, this));
 		}
-		//修复CampRelationship指向
+		// 修复CampRelationship指向
 		for (UXD_CampInfo* CampInfo : CampList)
 		{
 			for (UXD_CampRelationship*& CampRelationship : CampInfo->CampRelationships)
@@ -236,3 +243,5 @@ EXD_CampRelationship UXD_CampManager::GetCampRelationship(UXD_CampInfo* Camp, UX
 {
 	return Camp->GetCampRelationship(this, WithCamp);
 }
+
+#undef LOCTEXT_NAMESPACE

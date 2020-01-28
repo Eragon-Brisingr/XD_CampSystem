@@ -27,10 +27,9 @@ public:
 
 	virtual void ReplicatedCampRelationships(bool& WroteSomething, class UActorChannel * Channel, class FOutBunch * Bunch, FReplicationFlags * RepFlags);
 public:
-	void SetGraph(UXD_CampGraph* InGraph);
 	UXD_CampGraph* GetGraph();
 public:
-	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营名"), AdvancedDisplay = true)
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadOnly, Replicated, Category = "阵营", meta = (DisplayName = "阵营名"), AdvancedDisplay = true)
 	FText CampName;
 
 	//考虑阵营更名情况，使用Guid作为阵营唯一信息

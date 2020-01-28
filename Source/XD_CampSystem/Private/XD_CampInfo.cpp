@@ -56,11 +56,6 @@ void UXD_CampInfo::ReplicatedCampRelationships(bool& WroteSomething, class UActo
 	}
 }
 
-void UXD_CampInfo::SetGraph(UXD_CampGraph* InGraph)
-{
-	Rename(nullptr, InGraph);
-}
-
 UXD_CampGraph* UXD_CampInfo::GetGraph()
 {
 	return CastChecked<UXD_CampGraph>(GetOuter());
