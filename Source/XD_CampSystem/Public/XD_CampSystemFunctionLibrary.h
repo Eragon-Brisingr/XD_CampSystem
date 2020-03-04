@@ -24,10 +24,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
 	static bool SetCampByRef(UPARAM(Ref)FXD_CampConfig& Camp, class UXD_CampInfo* CampInfo);
 
-	UFUNCTION(BlueprintPure, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
-	static FXD_CampConfig MakeCampConfig(const UObject* WorldContextObject, const FText& CampName);
+	UFUNCTION(BlueprintPure, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject", NativeMakeFunc))
+	static FXD_CampConfig MakeCampConfig(const FText& CampName, const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject", NativeBreakFunc))
 	static class UXD_CampInfo* BreakCampConfig(const FXD_CampConfig& CampConfig, const UObject* WorldContextObject);
 public:
 	UFUNCTION(BlueprintPure, Category = "游戏|阵营", meta = (WorldContext = "WorldContextObject"))

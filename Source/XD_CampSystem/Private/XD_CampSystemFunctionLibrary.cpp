@@ -22,7 +22,7 @@ bool UXD_CampSystemFunctionLibrary::SetCampByRef(FXD_CampConfig& Camp, class UXD
 	return Camp.SetCamp(CampInfo);
 }
 
-FXD_CampConfig UXD_CampSystemFunctionLibrary::MakeCampConfig(const UObject* WorldContextObject, const FText& CampName)
+FXD_CampConfig UXD_CampSystemFunctionLibrary::MakeCampConfig(const FText& CampName, const UObject* WorldContextObject)
 {
 	return FXD_CampConfig(WorldContextObject, CampName);
 }
