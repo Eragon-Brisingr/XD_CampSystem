@@ -40,7 +40,7 @@ public class XD_CampSystem : ModuleRules
 				"SlateCore",
 
                 "XD_UnrealLibraryEx",
-                "XD_SaveGameSystem",
+				"GameSerializer",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include <Components/ActorComponent.h>
-#include "XD_SaveGameInterface.h"
+#include "GameSerializerInterface.h"
 #include "XD_CampSystemType.h"
 #include "XD_CampManager.generated.h"
 
@@ -14,7 +14,7 @@ class UXD_CampInfo;
  * 
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class XD_CAMPSYSTEM_API UXD_CampManager : public UActorComponent, public IXD_SaveGameInterface
+class XD_CAMPSYSTEM_API UXD_CampManager : public UActorComponent, public IComponentGameSerializerInterface
 {
 	GENERATED_BODY()
 
