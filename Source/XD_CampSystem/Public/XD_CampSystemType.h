@@ -31,7 +31,7 @@ public:
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "阵营")
-	mutable UXD_CampInfo* CampInfo;
+	mutable UXD_CampInfo* CampInfo = nullptr;
 
 public:
 	// 考虑阵营更名情况，使用Guid作为阵营唯一信息
