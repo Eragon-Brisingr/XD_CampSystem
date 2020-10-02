@@ -47,8 +47,6 @@ public class XD_CampSystem_Editor : ModuleRules
                 "ToolMenus",
 
                 "XD_CampSystem",
-                "XD_UnrealLibraryEx",
-                "XD_UnrealLibraryEx_Editor",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

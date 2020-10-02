@@ -3,17 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "XD_PropertyCustomizationEx.h"
+#include "IPropertyTypeCustomization.h"
 
 /**
  * 
  */
-class XD_CAMPSYSTEM_EDITOR_API FXD_CampConfig_Customization : public IPropertyTypeCustomizationMakeInstanceable<FXD_CampConfig_Customization>
+class XD_CAMPSYSTEM_EDITOR_API FXD_CampConfig_Customization : public IPropertyTypeCustomization
 {
 public:
+	static TSharedRef<IPropertyTypeCustomization> MakeInstance() { return MakeShareable(new FXD_CampConfig_Customization()); }
+	
 	/** IPropertyTypeCustomization interface */
-	virtual void CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override;
-	virtual void CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override {}
+	void CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override;
+	void CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils) override {}
 
 	TArray<TSharedPtr<FString>> CampNameList;
 	TSharedPtr<FString> InitSelectedText;

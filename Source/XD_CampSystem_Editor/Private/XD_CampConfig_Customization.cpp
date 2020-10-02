@@ -11,10 +11,48 @@
 #include "XD_CampGraph.h"
 #include "XD_CampInfo.h"
 
+namespace CampPropertyCustomize
+{
+	UObject* GetOuter(const TSharedRef<IPropertyHandle>& PropertyHandle)
+	{
+		TArray<UObject*> Outers;
+		PropertyHandle->GetOuterObjects(Outers);
+		return Outers.Num() > 0 ? Outers[0] : nullptr;
+	}
+
+	template<typename ValueType>
+	ValueType* Value(const TSharedPtr<IPropertyHandle>& PropertyHandle)
+	{
+		if (UObject* Outer = GetOuter(PropertyHandle.ToSharedRef()))
+		{
+			return reinterpret_cast<ValueType*>(PropertyHandle->GetValueBaseAddress(reinterpret_cast<uint8*>(Outer)));
+		}
+		return nullptr;
+	}
+
+	template<typename Type>
+	static void SetValue(const TSharedPtr<IPropertyHandle>& PropertyHandle, const Type& Value, bool NotifyChange = true)
+	{
+		if (NotifyChange)
+		{
+			PropertyHandle->NotifyPreChange();
+		}
+		if (Type* Target = reinterpret_cast<Type*>(PropertyHandle->GetValueBaseAddress(reinterpret_cast<uint8*>(GetOuter(PropertyHandle.ToSharedRef())))))
+		{
+			*Target = Value;
+			if (NotifyChange)
+			{
+				PropertyHandle->NotifyPostChange(EPropertyValueSetFlags::DefaultFlags);
+			}
+		}
+	}
+}
+
+
 void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
-	TSharedPtr<IPropertyHandle> CampName_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampName));
-	TSharedPtr<IPropertyHandle> CampGuid_PropertyHandle = FPropertyCustomizeHelper::GetPropertyHandleByName(StructPropertyHandle, GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampGuid));
+	TSharedPtr<IPropertyHandle> CampName_PropertyHandle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampName));
+	TSharedPtr<IPropertyHandle> CampGuid_PropertyHandle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FXD_CampConfig, CampGuid));
 
 	bool HasValidCampName = false;
 	UXD_CampGraph* CampGraph = GetDefault<UXD_CampSystemSetting>()->GlobalCampGraph.LoadSynchronous();
@@ -22,7 +60,7 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 	{
 		CampNameList = CampGraph->GetAllCampNames();
 
-		if (const FGuid* CampHandle = FPropertyCustomizeHelper::Value<FGuid>(CampGuid_PropertyHandle))
+		if (const FGuid* CampHandle = CampPropertyCustomize::Value<FGuid>(CampGuid_PropertyHandle))
 		{
 			int32 Index = CampGraph->CampList.IndexOfByPredicate([&](const UXD_CampInfo* E) {return E->CampGuid == *CampHandle; });
 			if (Index != INDEX_NONE)
@@ -35,7 +73,7 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 
 	if (HasValidCampName == false)
 	{
-		if (const FText* CampName = FPropertyCustomizeHelper::Value<FText>(CampName_PropertyHandle))
+		if (const FText* CampName = CampPropertyCustomize::Value<FText>(CampName_PropertyHandle))
 		{
 			InitSelectedText = MakeShareable(new FString(FString::Printf(TEXT("[%s]_无效的阵营名"), *CampName->ToString())));
 		}
@@ -59,7 +97,7 @@ void FXD_CampConfig_Customization::CustomizeHeader(TSharedRef<class IPropertyHan
 						if (UXD_CampInfo* CampInfo = *P_CampInfo)
 						{
 							CampName_PropertyHandle->SetValue(CampInfo->CampName);
-							FPropertyCustomizeHelper::SetValue(CampGuid_PropertyHandle, CampInfo->CampGuid);
+							CampPropertyCustomize::SetValue(CampGuid_PropertyHandle, CampInfo->CampGuid);
 						}
 					}
 				}

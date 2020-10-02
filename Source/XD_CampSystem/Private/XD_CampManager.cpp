@@ -8,7 +8,6 @@
 #include "XD_CampSystemUtility.h"
 #include "XD_CampSystemInterface.h"
 #include "XD_CampSystemSetting.h"
-#include "XD_ObjectFunctionLibrary.h"
 #include "XD_CampRelationship.h"
 #include "XD_CampGraph.h"
 
@@ -74,14 +73,14 @@ void UXD_CampManager::WhenGameInit_Implementation()
 		// 复制阵营指向并重置Outer
 		for (UXD_CampInfo* CampInfo : CampGraph->CampList)
 		{
-			CampList.Add(UXD_ObjectFunctionLibrary::DuplicateObject(CampInfo, this));
+			CampList.Add(NewObject<UXD_CampInfo>(this, NAME_None, RF_NoFlags, CampInfo));
 		}
 		// 修复CampRelationship指向
 		for (UXD_CampInfo* CampInfo : CampList)
 		{
 			for (UXD_CampRelationship*& CampRelationship : CampInfo->CampRelationships)
 			{
-				CampRelationship = UXD_ObjectFunctionLibrary::DuplicateObject(CampRelationship, this);
+				CampRelationship = NewObject<UXD_CampRelationship>(this, NAME_None, RF_NoFlags, CampRelationship);
 				CampRelationship->ToCamp = *CampList.FindByPredicate([&](UXD_CampInfo* Camp) {return Camp->CampName.EqualTo(CampRelationship->ToCamp->CampName); });
 			}
 		}
